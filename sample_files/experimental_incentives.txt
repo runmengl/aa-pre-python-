@@ -1,1 +1,0 @@
-A randomized field experiment tested whether recognition incentives changed public employee follow-through on service requests. Teams assigned to receive weekly recognition messages completed eligible tasks faster during the trial period. The evidence supports a bounded causal claim for the tested incentive, sample, and timeframe, but not a universal guarantee.

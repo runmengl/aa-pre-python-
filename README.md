@@ -30,38 +30,6 @@ npm run dev:full
 
 That command starts the browser app and the local Node logging server used by the Generate Document demo.
 
-## How to Run the Python Keyword Scanner
-
-The project also includes a local deterministic Python demo that scans files for a keyword and prints readable terminal results. It does not call any external API.
-
-From PowerShell or another terminal, run:
-
-```bash
-python scripts/keyword_file_scanner.py --keyword motivation --folder ./sample_files
-```
-
-You can scan for a different keyword:
-
-```bash
-python scripts/keyword_file_scanner.py --keyword innovation --folder ./sample_files
-```
-
-To save a Markdown report, add `--export`:
-
-```bash
-python scripts/keyword_file_scanner.py --keyword innovation --folder ./sample_files --export
-```
-
-The export command writes to:
-
-```text
-exports/keyword_scan_report.md
-```
-
-Generated reports are ignored by Git, while the `exports/` folder remains available for local demo output.
-
-The scanner reads `.txt`, `.md`, and `.html` files. It skips `node_modules`, `dist`, `.git`, and `exports` folders so local build artifacts and generated reports do not pollute the scan.
-
 ## Use Sample Texts
 
 Seven sample texts are defined in `src/data/sampleTexts.js`:
