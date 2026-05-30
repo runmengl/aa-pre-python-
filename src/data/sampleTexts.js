@@ -1,0 +1,51 @@
+export const sampleTexts = [
+  {
+    id: "quantitative",
+    label: "Quantitative Sample",
+    methodology: "quantitative",
+    outputType: "executive_summary",
+    text: "A survey of 1,240 customer success teams found that accounts receiving monthly workflow reviews had a 14 percent higher renewal rate than accounts without documented review cadences. The analysis controlled for company size, contract value, implementation age, and support tier. Results suggest a measurable association between review discipline and retention, but the non-randomized design does not establish causality.",
+  },
+  {
+    id: "qualitative",
+    label: "Qualitative Sample",
+    methodology: "qualitative",
+    outputType: "policy_memo",
+    text: "Researchers conducted 32 semi-structured interviews with frontline program managers across five regions. Participants described recurring friction around unclear ownership, late escalation, and inconsistent handoffs between intake and delivery teams. The findings identify common themes and lived constraints, but they should not be treated as population-level prevalence estimates.",
+  },
+  {
+    id: "mixed_methods",
+    label: "Mixed Methods Sample",
+    methodology: "mixed_methods",
+    outputType: "policy_brief",
+    text: "The evaluation combined usage analytics from 18,600 sessions with follow-up interviews from 24 operators. Quantitative patterns showed that completion rates dropped sharply when cases required more than two approvals. Interview evidence explained the drop as a coordination problem caused by unclear approval authority. Together, the evidence supports a triangulated diagnosis while preserving the limits of each source.",
+  },
+  {
+    id: "theoretical",
+    label: "Theoretical Sample",
+    methodology: "theoretical",
+    outputType: "mechanism_map",
+    text: "This note proposes a mechanism linking playbook clarity, decision confidence, and escalation quality. The model predicts that teams will use AI-generated recommendations more consistently when decision rights and exception criteria are explicit. The argument is conceptual and should be read as a hypothesis-generating framework rather than empirical proof.",
+  },
+  {
+    id: "experimental",
+    label: "Experimental Sample",
+    methodology: "experimental",
+    outputType: "technical_note",
+    text: "A randomized field experiment assigned 420 support agents to either a standard playbook or an AI-assisted playbook with structured prompts. After four weeks, the treatment group resolved eligible cases 11 percent faster with no significant change in quality audit scores. Because assignment was randomized and compliance was high, the study supports a causal claim for the tested setting and population.",
+  },
+  {
+    id: "meta_analysis",
+    label: "Meta-analysis Sample",
+    methodology: "meta_analysis",
+    outputType: "fact_sheet",
+    text: "A meta-analysis pooled effect sizes from 27 independent studies on AI decision support in operational teams. The pooled estimate showed a small-to-moderate positive effect on task completion speed, with substantial heterogeneity by workflow complexity and training intensity. The synthesis supports a directional pattern across studies, but publication bias and inconsistent outcome definitions remain concerns.",
+  },
+  {
+    id: "systematic_review",
+    label: "Systematic Review Sample",
+    methodology: "systematic_review",
+    outputType: "linkedin_post",
+    text: "A systematic review screened 418 records and included 52 studies on AI playbook adoption in knowledge work. Most studies reported improved standardization, but evidence quality varied and few studies measured long-term behavior change. The review maps the evidence base and identifies gaps, but it should not be framed as a pooled estimate unless formal meta-analysis is performed.",
+  },
+];
