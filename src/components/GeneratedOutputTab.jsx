@@ -1,13 +1,8 @@
 import Card from "./Card.jsx";
+import ReadableReport from "./ReadableReport.jsx";
 import ScoreBadge from "./ScoreBadge.jsx";
 
-function formatLabel(value) {
-  return String(value ?? "")
-    .replaceAll("_", " ")
-    .replace(/\b\w/g, (letter) => letter.toUpperCase());
-}
-
-export default function GeneratedOutputTab({ result }) {
+export default function GeneratedOutputTab({ result, selectedPaper }) {
   const generatedOutput = result?.generated_output;
 
   return (
@@ -17,23 +12,11 @@ export default function GeneratedOutputTab({ result }) {
     >
       {generatedOutput?.text ? (
         <>
-          <div className="metricGrid">
-            <div className="metric">
-              <p className="metricLabel">Methodology</p>
-              <p className="metricValue">{formatLabel(generatedOutput.methodology)}</p>
-            </div>
-            <div className="metric">
-              <p className="metricLabel">Output Type</p>
-              <p className="metricValue">{formatLabel(generatedOutput.output_type)}</p>
-            </div>
-            <div className="metric">
-              <p className="metricLabel">Target Audience</p>
-              <p className="metricValue">
-                {formatLabel(generatedOutput.target_audience)}
-              </p>
-            </div>
-          </div>
-          <pre className="generatedOutputText">{generatedOutput.text}</pre>
+          <ReadableReport result={result} selectedPaper={selectedPaper} />
+          <details className="rawOutputDetails">
+            <summary>Show raw generated text</summary>
+            <pre className="generatedOutputText">{generatedOutput.text}</pre>
+          </details>
         </>
       ) : (
         <p className="metricLabel">

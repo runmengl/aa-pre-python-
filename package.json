@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --open",
+    "server": "node server.js",
+    "dev:full": "concurrently \"npm run server\" \"npm run dev\"",
     "open": "vite --open",
     "build": "vite build",
     "preview": "vite preview"
@@ -15,6 +17,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-react": "latest",
+    "concurrently": "^10.0.0",
+    "express": "^5.2.1",
     "vite": "latest"
   }
 }

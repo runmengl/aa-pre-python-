@@ -306,5 +306,23 @@ export function detectFailureModes({
     );
   }
 
+  if (outputTypeId === "mechanism_map" && !summary.summary?.has_causal_language) {
+    addFailureMode(
+      failureModes,
+      makeFailureMode({
+        id: "mechanism_invention",
+        title: "Mechanism invention risk",
+        severity: "medium",
+        rationale:
+          "A mechanism map can imply causal pathways, but the source text does not include visible causal evidence.",
+        evidence: summary.evidence_sentences.slice(0, 2),
+        safeguards: [
+          "Label mechanisms as possible or hypothesized unless causal evidence is explicit.",
+          ...safeguards,
+        ],
+      }),
+    );
+  }
+
   return failureModes;
 }

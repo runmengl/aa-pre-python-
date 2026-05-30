@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CapstoneTalkingPoints from "./CapstoneTalkingPoints.jsx";
 import ConsistencyTab from "./ConsistencyTab.jsx";
+import GeneratedDocumentTab from "./GeneratedDocumentTab.jsx";
 import FailureModesTab from "./FailureModesTab.jsx";
 import GeneratedOutputTab from "./GeneratedOutputTab.jsx";
 import WorkflowTab from "./WorkflowTab.jsx";
@@ -10,12 +11,27 @@ const tabs = [
   { id: "consistency", label: "Consistency", Component: ConsistencyTab },
   { id: "failures", label: "Failure Modes", Component: FailureModesTab },
   { id: "generated", label: "Generated Output", Component: GeneratedOutputTab },
+  {
+    id: "document",
+    label: "Generated Document",
+    Component: GeneratedDocumentTab,
+  },
 ];
 
-export default function ResultsTabs({ result, initialTab = "workflow" }) {
+export default function ResultsTabs({
+  result,
+  selectedPaper,
+  initialTab = "workflow",
+}) {
   const [activeTab, setActiveTab] = useState(initialTab);
   const currentTab = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
   const ActiveComponent = currentTab.Component;
+
+  useEffect(() => {
+    if (result?.generated_document) {
+      setActiveTab("document");
+    }
+  }, [result?.generated_document]);
 
   return (
     <section className="resultsPanel" aria-label="Analysis results">
@@ -42,7 +58,7 @@ export default function ResultsTabs({ result, initialTab = "workflow" }) {
         id={`${currentTab.id}-panel`}
         role="tabpanel"
       >
-        <ActiveComponent result={result} />
+        <ActiveComponent result={result} selectedPaper={selectedPaper} />
       </div>
 
       <CapstoneTalkingPoints result={result} />

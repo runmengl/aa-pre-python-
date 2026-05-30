@@ -1,8 +1,11 @@
 import { useState } from "react";
 import InputPanel from "./components/InputPanel.jsx";
+import PaperSearch from "./components/PaperSearch.jsx";
 import SampleTextButtons from "./components/SampleTextButtons.jsx";
 import ResultsTabs from "./components/ResultsTabs.jsx";
 import { analyzeText } from "./logic/analyzeText.js";
+import { buildReadableDocument } from "./logic/buildReadableDocument.js";
+import { logGenerationEvent } from "./utils/generationLogger.js";
 import {
   methodologyOptions,
   outputTypeOptions,
@@ -16,10 +19,12 @@ export default function App() {
   const [targetAudience, setTargetAudience] = useState("public_administrators");
   const [result, setResult] = useState(null);
   const [selectedSampleId, setSelectedSampleId] = useState(null);
+  const [selectedPaper, setSelectedPaper] = useState(null);
 
   function handleTextChange(nextText) {
     setText(nextText);
     setSelectedSampleId(null);
+    setSelectedPaper(null);
     setResult(null);
   }
 
@@ -27,7 +32,21 @@ export default function App() {
     setText(sample.text);
     setExpectedMethodology(sample.methodology ?? "auto_detect");
     setSelectedSampleId(sample.id);
+    setSelectedPaper(null);
     setResult(null);
+  }
+
+  function handleUsePaper(paper) {
+    setText(paper.research_text);
+    setExpectedMethodology(paper.methodology);
+    setSelectedPaper(paper);
+    setSelectedSampleId(null);
+    setResult(null);
+    console.log("Use This Paper selected", {
+      paperId: paper.id,
+      title: paper.title,
+      methodology: paper.methodology,
+    });
   }
 
   function handleExpectedMethodologyChange(nextMethodology) {
@@ -46,14 +65,82 @@ export default function App() {
   }
 
   function handleAnalyze() {
-    setResult(
-      analyzeText({
-        text,
-        expectedMethodology,
-        outputType,
-        targetAudience,
-      }),
-    );
+    console.log("Analyze Text clicked", {
+      textLength: text.length,
+      expectedMethodology,
+      outputType,
+      targetAudience,
+    });
+
+    const analysis = analyzeText({
+      text,
+      expectedMethodology,
+      outputType,
+      targetAudience,
+    });
+
+    console.log("Analysis result", analysis);
+    setResult(analysis);
+  }
+
+  function handleGenerateOutput() {
+    console.log("Generate Output clicked", {
+      textLength: text.length,
+      expectedMethodology,
+      outputType,
+      targetAudience,
+    });
+
+    const analysis = analyzeText({
+      text,
+      expectedMethodology,
+      outputType,
+      targetAudience,
+    });
+
+    console.log("Generated output result", analysis.generated_output);
+    setResult(analysis);
+  }
+
+  function handleGenerateDocument() {
+    console.log("Generate Document clicked", {
+      textLength: text.length,
+      expectedMethodology,
+      outputType,
+      targetAudience,
+    });
+
+    const analysis = analyzeText({
+      text,
+      expectedMethodology,
+      outputType,
+      targetAudience,
+    });
+    const document = buildReadableDocument({
+      analysis,
+      text,
+      expectedMethodology,
+      outputType,
+      targetAudience,
+      selectedPaper,
+    });
+    const nextResult = {
+      ...analysis,
+      generated_document: document,
+    };
+
+    setResult(nextResult);
+
+    void logGenerationEvent({
+      event: "Generate Document",
+      methodology: document.metadata.methodology,
+      outputType: document.metadata.output_type,
+      targetAudience: document.metadata.target_audience,
+      workflowTrace: analysis.workflow_trace,
+      fidelityScores: analysis.fidelity_scores,
+      failureModes: analysis.failure_modes,
+      generatedDocumentTitle: document.title,
+    });
   }
 
   return (
@@ -65,10 +152,13 @@ export default function App() {
 
       <section className="workspace" aria-label="Analyzer workspace">
         <div className="inputColumn">
+          <PaperSearch onUsePaper={handleUsePaper} />
           <InputPanel
             value={text}
             onTextChange={handleTextChange}
             onAnalyze={handleAnalyze}
+            onGenerateOutput={handleGenerateOutput}
+            onGenerateDocument={handleGenerateDocument}
             expectedMethodology={expectedMethodology}
             onExpectedMethodologyChange={handleExpectedMethodologyChange}
             methodologyOptions={methodologyOptions}
@@ -84,7 +174,7 @@ export default function App() {
             selectedSampleId={selectedSampleId}
           />
         </div>
-        <ResultsTabs result={result} />
+        <ResultsTabs result={result} selectedPaper={selectedPaper} />
       </section>
     </main>
   );

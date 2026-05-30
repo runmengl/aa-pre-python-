@@ -91,9 +91,47 @@ function limitations(evidenceSummary, failureModes) {
   return `${limitationLines}\n- ${failureNote(failureModes)}`;
 }
 
-function buildContext({ methodology, targetAudience }) {
+function audienceCaution(targetAudience) {
+  const cautions = {
+    policymakers:
+      "Emphasize policy relevance while keeping decision claims cautious.",
+    public_administrators:
+      "Emphasize implementation use and operational limits.",
+    communications_staff:
+      "Use plain language and avoid messaging that sounds more certain than the evidence.",
+    program_managers:
+      "Connect the evidence to program design, implementation, and evaluation checkpoints.",
+    research_analysts:
+      "Keep method quality, evidence strength, and inference limits visible.",
+    general_public:
+      "Use plain language, avoid jargon, and explain uncertainty directly.",
+    students:
+      "Explain how the method shapes the claim and why limitations matter.",
+  };
+
+  return cautions[targetAudience] ?? cautions.public_administrators;
+}
+
+function buildDocumentHeader({ outputType, methodology, targetAudience }) {
   const profile = audienceProfile(targetAudience);
-  return `This ${profile.tone} output is written for ${profile.label}. It emphasizes ${profile.focus}. The underlying method is ${formatLabel(methodology)}.`;
+
+  return `Title
+${formatLabel(outputType)} for ${formatLabel(methodology)} Evidence
+
+Audience
+This draft is written for ${profile.label}. It emphasizes ${profile.focus}. ${audienceCaution(targetAudience)}
+
+Methodology Note
+The source evidence is ${formatLabel(methodology)}. Claims should remain aligned with what this method can support.`;
+}
+
+function buildLimitationsAndFidelity({
+  evidenceSummary,
+  failureModes,
+  targetAudience,
+}) {
+  return `${limitations(evidenceSummary, failureModes)}
+- Audience adaptation: ${audienceCaution(targetAudience)}`;
 }
 
 function buildHashtags(methodology, outputType) {
@@ -114,7 +152,11 @@ export function generateOutput({
   failureModes = [],
 } = {}) {
   const profile = audienceProfile(targetAudience);
-  const context = buildContext({ methodology, targetAudience });
+  const header = buildDocumentHeader({
+    outputType,
+    methodology,
+    targetAudience,
+  });
   const primaryClaim = firstValue(
     evidenceSummary?.main_claims,
     text.trim() || "No source text was provided.",
@@ -126,15 +168,22 @@ export function generateOutput({
   const action = profile.action;
   const evidenceType = `${formatLabel(methodology)} evidence`;
   const riskNote = failureNote(failureModes);
+  const limitationsAndFidelity = buildLimitationsAndFidelity({
+    evidenceSummary,
+    failureModes,
+    targetAudience,
+  });
 
   if (outputType === "policy_brief") {
-    return `Issue
-${context}
+    return `${header}
+
+Issue
+${primaryClaim}
 
 Evidence Summary
 ${takeaways(evidenceSummary)}
 
-Implications
+Policy Implications
 - The evidence can inform ${profile.focus}.
 - The main practical signal is: ${primaryClaim}
 - Causal interpretation should remain bounded: ${causalClaim}
@@ -144,12 +193,14 @@ Recommended Actions
 - Keep decisions proportional to the strength of the evidence.
 - Review failure modes before converting this into policy language.
 
-Limitations
-${limitations(evidenceSummary, failureModes)}`;
+Limitations and Fidelity Note
+${limitationsAndFidelity}`;
   }
 
   if (outputType === "policy_memo") {
-    return `To
+    return `${header}
+
+To
 ${formatLabel(targetAudience)}
 
 From
@@ -159,7 +210,7 @@ Subject
 Method-bounded interpretation of ${formatLabel(methodology)} evidence
 
 Background
-${context}
+The source text provides evidence that may support ${profile.focus}. This memo should be used as decision support, not as standalone proof.
 
 Analysis
 ${takeaways(evidenceSummary)}
@@ -168,12 +219,14 @@ Recommendation
 - ${action}
 - Use this memo as a decision support artifact, not as standalone proof.
 
-Limitations
-${limitations(evidenceSummary, failureModes)}`;
+Limitations and Fidelity Note
+${limitationsAndFidelity}`;
   }
 
   if (outputType === "fact_sheet") {
-    return `Study Focus
+    return `${header}
+
+Study Focus
 ${primaryClaim}
 
 Evidence Type
@@ -184,22 +237,39 @@ ${takeaways(evidenceSummary)}
 
 What This Does Not Prove
 - ${causalClaim}
-- ${riskNote}`;
+- ${riskNote}
+
+Practical Use
+- ${action}
+- Use this as a concise evidence summary, not as a complete implementation plan.
+
+Limitations and Fidelity Note
+${limitationsAndFidelity}`;
   }
 
   if (outputType === "linkedin_post") {
-    return `Evidence can help public-sector teams make better choices, but only when claims stay within the method.
+    return `${header}
 
-3 takeaways:
+Short Public-Facing Post
+Evidence can help public-sector teams make better choices, but only when claims stay within the method. For ${profile.label}, the useful signal is: ${primaryClaim}
+
+3 Bullet Takeaways
 ${takeaways(evidenceSummary)}
 
-Caution: ${riskNote}
+Caution
+${riskNote}
 
-${buildHashtags(methodology, outputType)}`;
+Hashtags
+${buildHashtags(methodology, outputType)}
+
+Limitations and Fidelity Note
+${limitationsAndFidelity}`;
   }
 
   if (outputType === "mechanism_map") {
-    return `Inputs / Conditions
+    return `${header}
+
+Inputs / Conditions
 - Audience: ${profile.label}
 - Method: ${formatLabel(methodology)}
 - Practical focus: ${profile.focus}
@@ -213,11 +283,19 @@ ${takeaways(evidenceSummary)}
 
 Causality Warning
 - ${causalClaim}
-- ${riskNote}`;
+- ${riskNote}
+
+Failure Mode Warning
+- ${riskNote}
+
+Limitations and Fidelity Note
+${limitationsAndFidelity}`;
   }
 
   if (outputType === "technical_note") {
-    return `Methodology
+    return `${header}
+
+Methodology
 ${formatLabel(methodology)}
 
 Evidence Type
@@ -233,11 +311,16 @@ Fidelity Risks
 
 Review Notes
 - ${action}
-- Confirm that the generated language remains traceable to the source text.`;
+- Confirm that the generated language remains traceable to the source text.
+
+Limitations and Fidelity Note
+${limitationsAndFidelity}`;
   }
 
-  return `Overview
-${context}
+  return `${header}
+
+Overview
+The source text provides a method-bounded evidence signal for ${profile.label}. The draft emphasizes ${profile.focus}.
 
 Key Findings
 ${takeaways(evidenceSummary)}
@@ -246,6 +329,6 @@ Practical Meaning
 - ${action}
 - The main practical signal is: ${primaryClaim}
 
-Fidelity Note
-- ${riskNote}`;
+Limitations and Fidelity Note
+${limitationsAndFidelity}`;
 }

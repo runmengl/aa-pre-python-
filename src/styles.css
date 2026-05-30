@@ -29,6 +29,7 @@ body {
 }
 
 button,
+input,
 select,
 textarea {
   font: inherit;
@@ -158,7 +159,9 @@ strong {
 }
 
 .textInput:focus,
+.keywordInput:focus,
 .analyzeButton:focus-visible,
+.documentButton:focus-visible,
 .tabButton:focus-visible,
 .sampleButton:focus-visible,
 select:focus-visible {
@@ -176,6 +179,90 @@ select {
   background: #ffffff;
 }
 
+.keywordInput {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #b9c7c0;
+  border-radius: 6px;
+  padding: 9px 12px;
+  color: #14231e;
+  background: #ffffff;
+}
+
+.paperSearchForm {
+  display: grid;
+  gap: 8px;
+}
+
+.paperSourceControl {
+  display: grid;
+  gap: 8px;
+}
+
+.paperSearchControls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.paperResults {
+  display: grid;
+  gap: 12px;
+  max-height: 540px;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.paperResult {
+  display: grid;
+  gap: 10px;
+  border: 1px solid #d6ded9;
+  border-radius: 8px;
+  padding: 14px;
+  background: #fbfcfa;
+}
+
+.paperResultHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.paperTitle {
+  margin: 0 0 4px;
+  color: #14231e;
+  font-size: 0.98rem;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.paperMeta {
+  margin: 0;
+  color: #596b64;
+  font-size: 0.84rem;
+}
+
+.keywordList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.keywordPill {
+  border: 1px solid #c8d5dd;
+  border-radius: 999px;
+  padding: 3px 8px;
+  color: #234050;
+  background: #edf4f7;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.usePaperButton {
+  justify-self: start;
+}
+
 .sampleGrid {
   display: grid;
   grid-template-columns: 1fr;
@@ -184,6 +271,7 @@ select {
 
 .sampleButton,
 .analyzeButton,
+.documentButton,
 .tabButton {
   min-height: 42px;
   border: 1px solid #b8c8c0;
@@ -206,8 +294,20 @@ select {
   text-align: center;
 }
 
+.documentButton {
+  border-color: #315a86;
+  padding: 11px 14px;
+  color: #ffffff;
+  background: #386796;
+  text-align: center;
+}
+
 .analyzeButton:hover {
   background: #174f48;
+}
+
+.documentButton:hover {
+  background: #294d72;
 }
 
 .sampleButton:hover,
@@ -220,7 +320,7 @@ select {
 
 .tabs {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
   border: 1px solid #ccd8d2;
   border-radius: 8px;
@@ -267,6 +367,164 @@ select {
   font-size: 0.92rem;
   line-height: 1.6;
   white-space: pre-wrap;
+}
+
+.rawOutputDetails {
+  border-top: 1px solid #edf0ec;
+  padding-top: 10px;
+}
+
+.rawOutputDetails summary {
+  color: #27433c;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.readableReport {
+  display: grid;
+  gap: 22px;
+}
+
+.reportMetaGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.reportMetaGrid .metric:first-child:nth-last-child(4) {
+  grid-column: 1 / -1;
+}
+
+.reportMetaValue {
+  margin: 0;
+  color: #14231e;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.reportSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.reportSectionTitle {
+  margin: 0 0 10px;
+  color: #14231e;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.readableDocument {
+  display: grid;
+  gap: 10px;
+  border: 1px solid #d6ded9;
+  border-radius: 8px;
+  padding: 24px;
+  background: #fffdf7;
+}
+
+.readableDocument h3 {
+  margin: 16px 0 0;
+  border-bottom: 1px solid #e4ebe7;
+  padding-bottom: 5px;
+  color: #173028;
+  font-size: 0.92rem;
+  letter-spacing: 0;
+}
+
+.readableDocument h3:first-child {
+  margin-top: 0;
+}
+
+.readableDocument p,
+.readableDocument ul {
+  margin: 0;
+}
+
+.scoreSummaryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.scoreSummaryItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border: 1px solid #d8e0dc;
+  border-radius: 6px;
+  padding: 9px 10px;
+  color: #263833;
+  background: #f8faf8;
+}
+
+.scoreSummaryItem span {
+  font-size: 0.84rem;
+  font-weight: 750;
+}
+
+.scoreSummaryItem strong {
+  font-size: 1rem;
+}
+
+.generatedDocumentPanel {
+  display: grid;
+  gap: 18px;
+}
+
+.documentPreviewTitle {
+  margin: 0 0 4px;
+  color: #14231e;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+.documentPreviewSubtitle {
+  margin: 0;
+  color: #4f625b;
+  font-weight: 750;
+}
+
+.documentMetadataGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.generatedDocumentPreview {
+  border: 1px solid #d6ded9;
+  border-radius: 8px;
+  padding: 26px;
+  background: #fffdf7;
+}
+
+.generatedDocumentPreview h1 {
+  margin: 0 0 10px;
+  color: #122620;
+  font-size: 1.75rem;
+  line-height: 1.15;
+}
+
+.generatedDocumentPreview h2 {
+  margin: 24px 0 10px;
+  border-bottom: 1px solid #e2e9e5;
+  padding-bottom: 6px;
+  color: #173028;
+  font-size: 1.05rem;
+  letter-spacing: 0;
+}
+
+.generatedDocumentPreview p {
+  margin: 0 0 10px;
+}
+
+.generatedDocumentPreview ul {
+  margin-bottom: 12px;
 }
 
 .metric {
@@ -401,12 +659,19 @@ tbody tr:nth-child(even) {
 
 @media (max-width: 900px) {
   .workspace,
-  .metricGrid {
+  .metricGrid,
+  .documentMetadataGrid,
+  .reportMetaGrid,
+  .scoreSummaryGrid {
     grid-template-columns: 1fr;
   }
 
   .textInput {
     min-height: 250px;
+  }
+
+  .paperSearchControls {
+    grid-template-columns: 1fr;
   }
 }
 

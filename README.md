@@ -6,15 +6,13 @@ AI Playbook Consistency & Failure Mode Analyzer is a single-page React + Vite ap
 
 The app helps students and reviewers compare an output against methodological constraints such as causal permission, generalizability, evidence strength, and output-risk safeguards. It is designed for classroom review, capstone preparation, and repeatable critique of AI-assisted writing.
 
-## Install
+## How to Run the React App
 
-Install Node.js first, then run:
+Install Node.js first, then install dependencies:
 
 ```bash
 npm install
 ```
-
-## Run
 
 Start the local Vite development server:
 
@@ -24,27 +22,45 @@ npm run dev
 
 Vite will start the dev server and open the app in your default browser.
 
-## One-command open
-
-Install dependencies once:
+To run the React app together with the local terminal logging server, use:
 
 ```bash
-npm install
+npm run dev:full
 ```
 
-Then open and run the app with:
+That command starts the browser app and the local Node logging server used by the Generate Document demo.
+
+## How to Run the Python Keyword Scanner
+
+The project also includes a local deterministic Python demo that scans files for a keyword and prints readable terminal results. It does not call any external API.
+
+From PowerShell or another terminal, run:
 
 ```bash
-npm run open
+python scripts/keyword_file_scanner.py --keyword motivation --folder ./sample_files
 ```
 
-You can also use:
+You can scan for a different keyword:
 
 ```bash
-npm run dev
+python scripts/keyword_file_scanner.py --keyword innovation --folder ./sample_files
 ```
 
-Both commands start the Vite dev server and should automatically open the app in your default browser.
+To save a Markdown report, add `--export`:
+
+```bash
+python scripts/keyword_file_scanner.py --keyword innovation --folder ./sample_files --export
+```
+
+The export command writes to:
+
+```text
+exports/keyword_scan_report.md
+```
+
+Generated reports are ignored by Git, while the `exports/` folder remains available for local demo output.
+
+The scanner reads `.txt`, `.md`, and `.html` files. It skips `node_modules`, `dist`, `.git`, and `exports` folders so local build artifacts and generated reports do not pollute the scan.
 
 ## Use Sample Texts
 

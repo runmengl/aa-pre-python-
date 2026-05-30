@@ -28,6 +28,8 @@ export default function InputPanel({
   defaultValue = "",
   onTextChange,
   onAnalyze,
+  onGenerateOutput,
+  onGenerateDocument,
   expectedMethodology,
   onExpectedMethodologyChange,
   methodologyOptions = [],
@@ -40,6 +42,8 @@ export default function InputPanel({
   placeholder = "Paste playbook output here...",
   title = "Input",
   analyzeLabel = "Analyze Text",
+  generateLabel = "Generate Output",
+  generateDocumentLabel = "Generate Document",
   disabled = false,
 }) {
   const textareaProps =
@@ -68,7 +72,9 @@ export default function InputPanel({
       {(methodologyOptions.length > 0 ||
         outputTypeOptions.length > 0 ||
         targetAudienceOptions.length > 0 ||
-        onAnalyze) && (
+        onAnalyze ||
+        onGenerateOutput ||
+        onGenerateDocument) && (
         <div className="inputControls">
           <SelectControl
             id="expected-methodology"
@@ -99,6 +105,26 @@ export default function InputPanel({
               type="button"
             >
               {analyzeLabel}
+            </button>
+          )}
+          {onGenerateOutput && (
+            <button
+              className="sampleButton"
+              disabled={disabled}
+              onClick={onGenerateOutput}
+              type="button"
+            >
+              {generateLabel}
+            </button>
+          )}
+          {onGenerateDocument && (
+            <button
+              className="documentButton"
+              disabled={disabled}
+              onClick={onGenerateDocument}
+              type="button"
+            >
+              {generateDocumentLabel}
             </button>
           )}
         </div>
