@@ -369,6 +369,11 @@ select {
   white-space: pre-wrap;
 }
 
+.generatedOutputPanel {
+  display: grid;
+  gap: 18px;
+}
+
 .rawOutputDetails {
   border-top: 1px solid #edf0ec;
   padding-top: 10px;

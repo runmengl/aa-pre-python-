@@ -1,113 +1,82 @@
 const audienceGuidance = {
   policymakers: {
     label: "Policymakers",
-    emphasis: "decision relevance, policy options, evidence caution, and implementation risk",
-    useLine:
-      "Use this as decision support for comparing policy options and identifying implementation risks.",
-    actionIntro: "Review policy options that address",
-    caution:
-      "Keep claims decision-relevant while avoiding certainty that the method does not support.",
+    lens: "policy decisions and implementation risk",
+    practicalUse: "use the evidence to review policy options and implementation risks",
   },
   public_administrators: {
     label: "Public Administrators",
-    emphasis: "operational use, management implications, and implementation constraints",
-    useLine:
-      "Use this to review management routines, implementation constraints, and evaluation checkpoints.",
-    actionIntro: "Use operational planning to address",
-    caution:
-      "Connect findings to implementation choices while keeping scope and method limits visible.",
+    lens: "management relevance and operational implications",
+    practicalUse: "use the evidence to review administrative practice and implementation limits",
   },
   communications_staff: {
     label: "Communications Staff",
-    emphasis: "plain-language messaging and communication cautions",
-    useLine:
-      "Use this for cautious messaging that explains what the evidence does and does not show.",
-    actionIntro: "Prepare plain-language messages about",
-    caution: "Avoid headlines or public messages that sound more certain than the evidence.",
+    lens: "clear messaging and caution against overclaiming",
+    practicalUse: "use the evidence in clear public messages with visible caveats",
   },
   program_managers: {
     label: "Program Managers",
-    emphasis: "program design, workflow improvement, evaluation, and implementation steps",
-    useLine:
-      "Use this to identify program design choices, workflow improvements, and evaluation needs.",
-    actionIntro: "Adjust program design and workflow around",
-    caution:
-      "Treat the evidence as a guide for implementation review, not as a guarantee of results.",
+    lens: "workflow, coordination, implementation, and evaluation",
+    practicalUse: "use the evidence to review program design, handoffs, and evaluation checkpoints",
   },
   research_analysts: {
     label: "Research Analysts",
-    emphasis: "evidence quality, method limits, inference rules, and review needs",
-    useLine:
-      "Use this to audit evidence quality, inference boundaries, and review requirements.",
-    actionIntro: "Document evidence quality and inference limits for",
-    caution:
-      "Keep source design, evidence strength, and missing information explicit before recommending action.",
+    lens: "evidence quality, inference limits, scope, and validity",
+    practicalUse: "use the evidence to audit method fit, scope, and inference boundaries",
   },
   general_public: {
     label: "General Public",
-    emphasis: "plain language, minimal jargon, and why the finding matters",
-    useLine:
-      "Use this as a plain-language explanation of what the research suggests and why it matters.",
-    actionIntro: "Explain in plain language why it matters that",
-    caution:
-      "Describe uncertainty directly and avoid technical claims that require background knowledge.",
+    lens: "plain language and practical meaning",
+    practicalUse: "use the evidence as a plain-language explanation of what the study suggests",
   },
   students: {
     label: "Students",
-    emphasis: "method explanation, evidence type, and why limitations matter",
-    useLine:
-      "Use this as a teaching example of how method choice shapes responsible conclusions.",
-    actionIntro: "Use the example to explain",
-    caution:
-      "Make the connection between method, evidence type, and limitation language explicit.",
+    lens: "method explanation, simpler language, and why limitations matter",
+    practicalUse: "use the evidence to learn how methods shape responsible conclusions",
   },
 };
 
 const methodologyNotes = {
   quantitative:
-    "This output treats the source as quantitative evidence. It may support statistical association, descriptive patterns, and limited prediction, but it should not claim causality unless the text explicitly names a randomized, experimental, treatment/control, or causal identification design.",
+    "Quantitative evidence can support association, descriptive patterns, and limited prediction, but it should not be rewritten as causal proof unless a causal design is explicit.",
   qualitative:
-    "This output treats the source as qualitative evidence. It may identify themes, meanings, participant descriptions, and context-bound interpretations, but it should not turn themes into population-level estimates or universal causal claims.",
+    "Qualitative evidence can support themes, participant descriptions, meanings, and context-bound interpretation, but it should not be rewritten as population-level prevalence or statistical proof.",
   mixed_methods:
-    "This output treats the source as mixed-methods evidence. Quantitative and qualitative strands should remain distinct unless the text explains how they are integrated.",
+    "Mixed-methods evidence should preserve quantitative and qualitative strands and should not merge them into one stronger claim unless the text explains that integration.",
   theoretical:
-    "This output treats the source as theoretical evidence. It may present conceptual logic, framework implications, and hypotheses, but it should not describe empirical findings unless the source text provides evidence.",
+    "Theoretical work should be rewritten as conceptual argument, framework logic, or hypotheses, not as tested empirical evidence unless the text provides evidence.",
   experimental:
-    "This output treats the source as experimental evidence. It may support bounded causal claims within the tested treatment, sample, and setting, while preserving external validity cautions.",
+    "Experimental evidence can support bounded causal language only when randomization, treatment, control, or experiment details are visible.",
   meta_analysis:
-    "This output treats the source as meta-analytic evidence. It may summarize pooled effects and cross-study patterns, but it should preserve heterogeneity and study-quality caveats.",
+    "Meta-analytic evidence should preserve pooled evidence, heterogeneity, and study-quality limits rather than implying a universal effect.",
   systematic_review:
-    "This output treats the source as systematic review evidence. It may summarize evidence patterns, gaps, and synthesis findings, but it should not present causal proof unless the reviewed designs support it.",
+    "Systematic review evidence should preserve synthesis, evidence patterns, and gaps rather than turning literature patterns into causal proof.",
   unknown:
-    "The methodology is not fully visible. This output should preserve cautious language and avoid claims that require stronger evidence than the text provides.",
+    "Methodology is not fully visible, so claims should be rewritten cautiously and kept close to the source text.",
 };
 
 const methodSignals = [
   "survey",
   "surveys",
   "regression",
-  "statistical",
   "cross-sectional",
+  "statistical",
   "interview",
   "interviews",
   "semi-structured",
   "focus group",
   "coded",
-  "mixed methods",
   "randomized",
   "randomised",
   "experiment",
   "experimental",
   "treatment",
   "control",
-  "trial",
   "systematic review",
-  "review",
   "meta-analysis",
   "meta analysis",
   "pooled",
   "study",
-  "studies",
   "sample",
   "data",
 ];
@@ -116,11 +85,14 @@ const findingSignals = [
   "finds",
   "findings",
   "found",
+  "indicate",
+  "indicates",
   "show",
   "shows",
   "identify",
   "identifies",
   "described",
+  "describes",
   "reported",
   "suggest",
   "suggests",
@@ -128,8 +100,8 @@ const findingSignals = [
   "linked to",
   "relationship",
   "themes",
-  "evidence",
   "results",
+  "evidence",
 ];
 
 const limitationSignals = [
@@ -145,14 +117,14 @@ const limitationSignals = [
   "sample",
   "context",
   "generalizability",
-  "generalizability",
+  "generalisability",
   "cannot",
   "does not",
   "should not",
   "not be treated",
   "not measured",
-  "causal conclusions are limited",
   "causal inference",
+  "causal conclusions",
   "heterogeneity",
   "publication bias",
   "gap",
@@ -183,8 +155,6 @@ const strongCausalSignals = [
   "guarantees",
   "results in",
   "resulted in",
-  "impact",
-  "impacts",
 ];
 
 function normalizeWhitespace(value) {
@@ -231,28 +201,14 @@ function stripEnding(value) {
   return normalizeWhitespace(value).replace(/[.;:,\s]+$/g, "");
 }
 
-function sentenceWithoutLimitationClause(sentence) {
-  return stripEnding(
-    String(sentence ?? "")
-      .replace(/\s+(?:but|however)\s+.+$/i, "")
-      .replace(/\s+although\s+.+$/i, ""),
-  );
-}
+function addPeriod(value) {
+  const text = normalizeWhitespace(value);
 
-function sentenceToFragment(sentence) {
-  const cleaned = sentenceWithoutLimitationClause(sentence);
+  if (!text) {
+    return "";
+  }
 
-  return stripEnding(
-    cleaned
-      .replace(/^this\s+study\s+(?:uses|examines|explores|analyzes|analyses)\s+/i, "")
-      .replace(/^the\s+study\s+(?:uses|examines|explores|analyzes|analyses)\s+/i, "")
-      .replace(/^researchers\s+conducted\s+/i, "")
-      .replace(/^participants\s+described\s+/i, "")
-      .replace(/^the\s+review\s+finds?\s+(?:that\s+)?/i, "")
-      .replace(/^the\s+findings\s+(?:identify|show|suggest)\s+(?:that\s+)?/i, "")
-      .replace(/^regression\s+results\s+show\s+(?:that\s+)?/i, "")
-      .replace(/^results\s+show\s+(?:that\s+)?/i, ""),
-  );
+  return /[.!?]$/.test(text) ? text : `${text}.`;
 }
 
 function capitalizeFirst(value) {
@@ -265,22 +221,6 @@ function capitalizeFirst(value) {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-function sentenceSubject(value) {
-  const focus = normalizeWhitespace(value);
-
-  if (/\sand\s/i.test(focus) && !lower(focus).startsWith("the relationship")) {
-    return `The relationship between ${focus}`;
-  }
-
-  return capitalizeFirst(focus);
-}
-
-function cleanLimitationText(value) {
-  return stripEnding(value)
-    .replace(/^they should not/i, "The findings should not")
-    .replace(/^it should not/i, "The finding should not");
-}
-
 function formatLabel(value) {
   return String(value ?? "")
     .replaceAll("_", " ")
@@ -289,46 +229,23 @@ function formatLabel(value) {
 
 function titleCase(value) {
   const smallWords = new Set(["and", "or", "of", "the", "for", "to", "in", "on"]);
-  const words = normalizeWhitespace(value).split(" ");
 
-  return words
+  return normalizeWhitespace(value)
+    .split(" ")
     .map((word, index) => {
-      const cleaned = word.toLowerCase();
+      const normalized = word.toLowerCase();
 
-      if (index > 0 && smallWords.has(cleaned)) {
-        return cleaned;
+      if (index > 0 && smallWords.has(normalized)) {
+        return normalized;
       }
 
-      return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+      return normalized.charAt(0).toUpperCase() + normalized.slice(1);
     })
     .join(" ");
 }
 
-function shortenPhrase(value, maxWords = 12) {
-  const words = normalizeWhitespace(value)
-    .replace(/^the\s+/i, "")
-    .split(" ")
-    .filter(Boolean);
-
-  if (words.length <= maxWords) {
-    return words.join(" ");
-  }
-
-  return `${words.slice(0, maxWords).join(" ")}`;
-}
-
-function listItems(items, fallback, limit = 5) {
-  const values = unique(items).slice(0, limit);
-
-  if (values.length === 0) {
-    return `- ${fallback}`;
-  }
-
-  return values.map((item) => `- ${capitalizeFirst(item)}`).join("\n");
-}
-
-function inlineList(items, fallback = "the evidence signals") {
-  const values = unique(items).slice(0, 3);
+function inlineList(items, fallback = "the evidence") {
+  const values = unique(items).slice(0, 4);
 
   if (values.length === 0) {
     return fallback;
@@ -345,6 +262,20 @@ function inlineList(items, fallback = "the evidence signals") {
   return `${values.slice(0, -1).join(", ")}, and ${values.at(-1)}`;
 }
 
+function listItems(items, fallback, limit = 5) {
+  const values = unique(items).slice(0, limit);
+
+  if (values.length === 0) {
+    return `- ${fallback}`;
+  }
+
+  return values.map((item) => `- ${addPeriod(capitalizeFirst(item))}`).join("\n");
+}
+
+function firstSentence(text, fallback = "The source text provides limited evidence.") {
+  return splitSentences(text)[0] ?? fallback;
+}
+
 function matchFirst(text, patterns) {
   for (const pattern of patterns) {
     const match = text.match(pattern);
@@ -355,6 +286,39 @@ function matchFirst(text, patterns) {
   }
 
   return "";
+}
+
+function sentenceWithoutLimitationClause(sentence) {
+  return stripEnding(
+    String(sentence ?? "")
+      .replace(/\s+(?:but|however)\s+.+$/i, "")
+      .replace(/\s+although\s+.+$/i, ""),
+  );
+}
+
+function sentenceToFragment(sentence) {
+  const cleaned = sentenceWithoutLimitationClause(sentence);
+
+  return stripEnding(
+    cleaned
+      .replace(/^this\s+study\s+(?:uses|examines|explores|analy[sz]es)\s+/i, "")
+      .replace(/^the\s+study\s+(?:uses|examines|explores|analy[sz]es)\s+/i, "")
+      .replace(/^researchers\s+conducted\s+/i, "")
+      .replace(/^the\s+researchers\s+conducted\s+/i, "")
+      .replace(/^participants\s+described\s+/i, "")
+      .replace(/^program managers\s+(?:said|reported|described)\s+/i, "")
+      .replace(/^the\s+review\s+finds?\s+(?:that\s+)?/i, "")
+      .replace(/^the\s+findings\s+(?:identify|show|suggest)\s+(?:that\s+)?/i, "")
+      .replace(/^regression\s+results\s+show\s+(?:that\s+)?/i, "")
+      .replace(/^results\s+show\s+(?:that\s+)?/i, ""),
+  );
+}
+
+function cleanLimitationText(value) {
+  return stripEnding(value)
+    .replace(/^they should not/i, "the findings should not")
+    .replace(/^it should not/i, "the finding should not")
+    .replace(/^these results do not/i, "these results do not");
 }
 
 function splitListPhrase(value) {
@@ -432,20 +396,16 @@ export function extractStudyFocus(text) {
   ]);
 
   if (examined) {
-    return shortenPhrase(examined, 12);
+    return examined;
   }
 
   const findingFocus = matchFirst(normalizedText, [
-    /findings? (?:identify|show|suggest)\s+(?:that\s+)?([^.]+?)(?:, but| but|\.|$)/i,
     /participants described ([^.]+?)(?:\.|, but| but|$)/i,
+    /findings? (?:identify|show|suggest)\s+(?:that\s+)?([^.]+?)(?:, but| but|\.|$)/i,
     /review finds?\s+(?:that\s+)?([^.]+?)(?:, but| but|\.|$)/i,
   ]);
 
-  if (findingFocus) {
-    return shortenPhrase(findingFocus, 10);
-  }
-
-  return shortenPhrase(splitSentences(normalizedText)[0] ?? "the source text", 10);
+  return findingFocus || sentenceToFragment(splitSentences(normalizedText)[0] ?? "");
 }
 
 export function extractEvidenceType(text, methodology = "unknown") {
@@ -510,14 +470,30 @@ export function extractEvidenceType(text, methodology = "unknown") {
   }
 
   return numericSignals.length > 0
-    ? `evidence containing numeric signals such as ${inlineList(numericSignals)}`
-    : "method details are limited in the pasted text";
+    ? `evidence containing ${inlineList(numericSignals)}`
+    : "source evidence with limited visible method detail";
 }
 
 export function extractLimitationSignals(text) {
   const { sentences } = summarizeInput(text);
   const directLimitations = sentences
-    .filter((sentence) => includesAny(sentence, limitationSignals))
+    .filter((sentence) => {
+      const normalized = lower(sentence);
+
+      return (
+        includesAny(sentence, limitationSignals) &&
+        (!normalized.includes("sample") ||
+          includesAny(sentence, [
+            "limit",
+            "limited",
+            "limitation",
+            "generalizability",
+            "generalisability",
+            "causal inference",
+            "not be treated",
+          ]))
+      );
+    })
     .map((sentence) => {
       const match = sentence.match(/\b(?:but|however)\b[,\s]+(.+)$/i);
       return cleanLimitationText(match?.[1] ?? sentence);
@@ -552,6 +528,14 @@ export function extractConditionsOrInputs(text) {
     conditions.push(...splitListPhrase(aroundMatch[1]));
   }
 
+  const problemsMatch = normalizedText.match(
+    /problems? such as ([^.]+?)(?:\.|, but| but|;|$)/i,
+  );
+
+  if (problemsMatch?.[1]) {
+    conditions.push(...splitListPhrase(problemsMatch[1]));
+  }
+
   const relationshipMatch = normalizedText.match(
     /relationship between ([^.]+?) and ([^.]+?)(?:\.|,|;|$)/i,
   );
@@ -564,23 +548,26 @@ export function extractConditionsOrInputs(text) {
     lower(sentence).includes("associated with"),
   );
   const associatedMatch = associationSentence?.match(
-    /^(?:(?:the\s+)?review finds? that |regression results show that |results show that |finds? that |show that |shows that )?(.+?) (?:is|are) (?:frequently )?associated with (.+?)(?:\.|,|;|$)/i,
+    /^(?:(?:the\s+)?review finds? that |the findings indicate |findings indicate |regression results show that |results show that |finds? that |show that |shows that )?(.+?) (?:is|are) (?:frequently )?associated with (.+?)(?:\.|,|;|$)/i,
   );
 
   if (associatedMatch) {
-    conditions.push(stripEnding(associatedMatch[1]));
+    conditions.push(stripEnding(associatedMatch[1]), stripEnding(associatedMatch[2]));
   }
 
   const supportConcepts = [
-    "leadership",
-    "organizational capacity",
+    "unclear ownership",
+    "unclear responsibilities",
+    "late escalation",
+    "delayed escalation",
+    "inconsistent handoffs",
+    "poor handoffs",
     "organizational support",
     "public service motivation",
-    "unclear ownership",
-    "late escalation",
-    "inconsistent handoffs",
-    "outcome measurement",
+    "leadership",
+    "organizational capacity",
     "public sector innovation",
+    "outcome measurement",
   ];
 
   supportConcepts.forEach((concept) => {
@@ -590,14 +577,13 @@ export function extractConditionsOrInputs(text) {
   });
 
   const cleanedConditions = unique(
-    conditions
-      .map((condition) =>
-        condition
-          .replace(/^that\s+/i, "")
-          .replace(/^the\s+/i, "")
-          .replace(/^findings?\s+/i, ""),
-      )
-      .map((condition) => shortenPhrase(condition, 10)),
+    conditions.map((condition) =>
+      stripEnding(condition)
+        .replace(/^that\s+/i, "")
+        .replace(/^the\s+/i, "")
+        .replace(/^findings?\s+indicate\s+/i, "")
+        .replace(/^findings?\s+/i, ""),
+    ),
   );
 
   return cleanedConditions.filter(
@@ -611,465 +597,574 @@ export function extractConditionsOrInputs(text) {
   );
 }
 
-export function buildMethodologyNote(methodology = "unknown", text = "") {
-  const baseNote = methodologyNotes[methodology] ?? methodologyNotes.unknown;
-
-  if (
-    methodology === "quantitative" &&
-    summarizeInput(text).has_causal_design
-  ) {
-    return "This output treats the source as quantitative evidence with visible causal-design language. Causal wording should still name the design, comparison, sample, and setting.";
-  }
-
-  return baseNote;
+export function buildMethodologyNote(methodology = "unknown") {
+  return methodologyNotes[methodology] ?? methodologyNotes.unknown;
 }
 
 export function buildAudienceGuidance(targetAudience = "public_administrators") {
   return audienceGuidance[targetAudience] ?? audienceGuidance.public_administrators;
 }
 
-function buildFailureNotes(failureModes = []) {
-  if (!failureModes.length) {
-    return [
-      "No priority failure mode was detected, but the output should still stay within the evidence.",
-    ];
-  }
-
-  return failureModes
-    .slice(0, 3)
-    .map(
-      (failureMode) =>
-        `${formatLabel(failureMode.failure_mode)}: ${failureMode.recommended_fix}`,
-    );
+function methodologyLabel(methodology) {
+  return formatLabel(methodology || "unknown").toLowerCase();
 }
 
-function buildCausalityWarning({ methodology, summary, limitations }) {
-  if (methodology === "experimental") {
-    return summary.has_causal_design
-      ? "Causal claims should be limited to the tested treatment, measured outcomes, sample, and setting."
-      : "Experimental causal language should be used only after the treatment/control design is visible.";
-  }
-
-  if (summary.has_causal_design) {
-    return "The text includes causal-design language, so any causal claim should name the design and remain bounded by its sample and setting.";
-  }
-
-  const limitation = limitations.find((item) => lower(item).includes("causal"));
-
-  if (limitation) {
-    return capitalizeFirst(limitation);
-  }
-
-  return "This source does not establish causal effects; use association, theme, pattern, or possible pathway language.";
-}
-
-function buildPracticalActions(data) {
-  const focusItems = data.conditions.length > 0 ? data.conditions : [data.studyFocus];
-  const focus = inlineList(focusItems);
-
-  return unique([
-    `${data.audience.actionIntro} ${focus}.`,
-    data.audience.useLine,
-    "Add a review checkpoint before converting this evidence into firm guidance.",
-  ]);
-}
-
-function methodologyLimitation(data) {
-  if (data.methodology === "qualitative" && lower(data.evidenceType).includes("interview")) {
-    return `Transfer cautiously because the evidence comes from ${data.evidenceType}`;
-  }
-
-  if (
-    data.methodology === "quantitative" &&
-    lower(data.evidenceType).includes("cross-sectional")
-  ) {
-    return "Cross-sectional quantitative evidence supports association language, not standalone causal claims";
-  }
-
-  if (data.methodology === "systematic_review") {
-    return "The synthesis should be used as an evidence pattern, not as causal proof";
-  }
-
-  if (data.methodology === "meta_analysis") {
-    return "Pooled evidence should be interpreted with attention to heterogeneity and study quality";
-  }
-
-  if (data.methodology === "experimental") {
-    return "External validity should be checked before applying the result beyond the tested setting";
-  }
-
-  return "";
-}
-
-function buildPolicyImplications(data) {
-  const finding = data.keyFindings[0] ?? `the source focuses on ${data.studyFocus}`;
-  const limitation = data.limitations[0] ?? data.causalityWarning;
-
-  return [
-    `${capitalizeFirst(finding)}.`,
-    `${data.audience.label} can use the evidence to consider ${inlineList(
-      data.conditions,
-      data.studyFocus,
-    )}.`,
-    `${capitalizeFirst(limitation)}.`,
-  ];
-}
-
-function buildMechanisms(data) {
-  const mechanismLines = data.conditions.map((condition) => {
-    const normalized = lower(condition);
-
-    if (normalized.includes("unclear ownership")) {
-      return "Unclear ownership may create coordination gaps.";
-    }
-
-    if (normalized.includes("late escalation")) {
-      return "Late escalation may delay problem resolution.";
-    }
-
-    if (normalized.includes("handoff")) {
-      return "Inconsistent handoffs may weaken continuity across intake and delivery work.";
-    }
-
-    if (normalized.includes("organizational support")) {
-      return "Organizational support may be linked to higher motivation, but the source supports association language unless causal design is explicit.";
-    }
-
-    if (normalized.includes("leadership")) {
-      return "Leadership may be part of the evidence pattern associated with public sector innovation.";
-    }
-
-    if (normalized.includes("organizational capacity")) {
-      return "Organizational capacity may shape whether innovation efforts can be supported and measured.";
-    }
-
-    if (normalized.includes("outcome measurement")) {
-      return "Weak outcome measurement may make it harder to judge whether innovation efforts changed results.";
-    }
-
-    return `${capitalizeFirst(condition)} may shape the pattern described in the source text.`;
-  });
-
-  if (mechanismLines.length > 0) {
-    return unique(mechanismLines);
-  }
-
-  return [
-    `${capitalizeFirst(data.studyFocus)} may be connected to the observed pattern, but the pathway should be treated as tentative.`,
-  ];
-}
-
-function outputTitle(outputType, studyFocus) {
-  const label = formatLabel(outputType);
-  return `${label}: ${titleCase(shortenPhrase(studyFocus, 8))}`;
-}
-
-function baseData({
-  text,
-  methodology,
-  outputType,
-  targetAudience,
-  evidenceSummary,
-  failureModes,
-}) {
+function buildRewriteData(text, methodology = "unknown") {
   const summary = summarizeInput(text);
-  const studyFocus = extractStudyFocus(text);
-  const evidenceType = extractEvidenceType(text, methodology);
-  const extractedFindings = extractKeyFindings(text);
   const limitations = extractLimitationSignals(text);
   const conditions = extractConditionsOrInputs(text);
-  const evidenceClaims = evidenceSummary?.main_claims ?? [];
-  const supplementalFindings = evidenceClaims
-    .filter((claim) => includesAny(claim, findingSignals))
-    .map((claim) => sentenceToFragment(claim));
-  const limitationClaims = (evidenceSummary?.limitations_found ?? []).map((claim) => {
-    const match = String(claim).match(/\b(?:but|however)\b[,\s]+(.+)$/i);
-    return cleanLimitationText(match?.[1] ?? claim);
-  });
-  const keyFindings = unique([...extractedFindings, ...supplementalFindings]).slice(
-    0,
-    5,
-  );
-  const limitationList = unique([...limitations, ...limitationClaims]).slice(0, 5);
-  const audience = buildAudienceGuidance(targetAudience);
-  const methodologyNote = buildMethodologyNote(methodology, text);
-  const causalityWarning = buildCausalityWarning({
-    methodology,
-    summary,
-    limitations: limitationList,
-  });
+  const findings = extractKeyFindings(text);
+  const evidenceType = extractEvidenceType(text, methodology);
+  const studyFocus = extractStudyFocus(text);
 
   return {
-    text,
+    text: summary.normalized_text,
     methodology,
-    outputType,
-    targetAudience,
     summary,
-    studyFocus,
-    evidenceType,
-    keyFindings,
-    limitations: limitationList,
+    limitations,
     conditions,
-    audience,
-    methodologyNote,
-    causalityWarning,
-    failureNotes: buildFailureNotes(failureModes),
-    title: outputTitle(outputType, studyFocus),
+    findings,
+    evidenceType,
+    studyFocus,
+    methodNote: buildMethodologyNote(methodology),
   };
 }
 
-function limitationsAndFidelity(data) {
-  const limitationTexts = unique([...data.limitations, methodologyLimitation(data)]);
+function primaryFinding(data) {
+  const contentFindings = data.findings.filter(
+    (finding) =>
+      !includesAny(finding, [
+        "qualitative evidence",
+        "quantitative evidence",
+        "method affects",
+        "should be read",
+        "should not imply",
+      ]),
+  );
+  const associationFinding = contentFindings.find((finding) =>
+    includesAny(finding, ["associated with", "linked to", "higher motivation"]),
+  );
 
-  if (
-    data.causalityWarning &&
-    !limitationTexts.some((item) => lower(item) === lower(data.causalityWarning))
-  ) {
-    limitationTexts.push(data.causalityWarning);
+  if (associationFinding) {
+    return associationFinding;
   }
 
-  return [
-    ...limitationTexts,
-    ...data.failureNotes,
-    `Audience fit: ${data.audience.caution}`,
-  ];
+  if (contentFindings.length > 0) {
+    return contentFindings[0];
+  }
+
+  if (data.findings.length > 0) {
+    return data.findings[0];
+  }
+
+  if (data.conditions.length > 0) {
+    return `${data.studyFocus} involves ${inlineList(data.conditions)}`;
+  }
+
+  return data.studyFocus || "the source text provides limited evidence";
 }
 
-function policyBrief(data) {
-  return `Title
-${data.title}
+function limitationOrDefault(data) {
+  if (data.limitations.length > 0) {
+    return capitalizeFirst(data.limitations[0]);
+  }
 
-Audience
-${data.audience.label}
+  if (data.methodology === "qualitative") {
+    return "The evidence should be treated as context-bound thematic insight rather than a population-level estimate";
+  }
 
-Methodology Note
-${data.methodologyNote}
+  if (data.methodology === "quantitative") {
+    return "The evidence should preserve association language and avoid unsupported causal claims";
+  }
 
-Issue
-${sentenceSubject(data.studyFocus)} is relevant to ${lower(data.audience.label)} because the source text connects it to ${inlineList(
-    data.conditions,
-    "practitioner decision-making",
-  )}.
+  if (data.methodology === "experimental") {
+    return data.summary.has_causal_design
+      ? "Any causal claim should stay bounded by the treatment, sample, setting, and measured outcomes"
+      : "Causal language should wait until the experimental design is visible";
+  }
 
-Evidence Summary
-${listItems(
-  [
-    `${capitalizeFirst(data.evidenceType)}.`,
-    ...data.keyFindings,
-  ],
-  "The pasted text provides limited evidence and should be reviewed before use.",
-)}
+  if (data.methodology === "meta_analysis") {
+    return "The interpretation should preserve heterogeneity and study-quality limits";
+  }
 
-Policy Implications
-${listItems(buildPolicyImplications(data), "Policy implications require more source detail.")}
+  if (data.methodology === "systematic_review") {
+    return "The interpretation should preserve synthesis limits and evidence gaps";
+  }
 
-Recommended Actions
-${listItems(buildPracticalActions(data), "Review the evidence before recommending action.")}
+  if (data.methodology === "theoretical") {
+    return "The argument should not be described as tested evidence unless the text provides empirical support";
+  }
 
-Limitations and Fidelity Note
-${listItems(limitationsAndFidelity(data), "No explicit limitations were found; add scope and uncertainty language before use.")}`;
+  return "Claims should stay within the visible source evidence";
 }
 
-function policyMemo(data) {
-  return `To
-${data.audience.label}
+function evidenceOpening(data, subject = "This study") {
+  const method = methodologyLabel(data.methodology);
+
+  if (data.methodology === "unknown") {
+    return `${subject} uses ${data.evidenceType}`;
+  }
+
+  return `${subject} uses ${method} evidence from ${data.evidenceType}`;
+}
+
+function conditionSentence(data, verb = "described") {
+  if (data.conditions.length === 0) {
+    return addPeriod(capitalizeFirst(primaryFinding(data)));
+  }
+
+  return `The source ${verb} ${inlineList(data.conditions)}.`;
+}
+
+function associationSafeFinding(data) {
+  const finding = primaryFinding(data)
+    .replace(/\bcauses?\b/gi, "is associated with")
+    .replace(/\bleads to\b/gi, "is associated with")
+    .replace(/\bproves?\b/gi, "provides evidence about")
+    .replace(/\bguarantees?\b/gi, "is linked to");
+
+  return finding;
+}
+
+function studentMainPoint(data) {
+  const finding = sentenceToFragment(primaryFinding(data));
+
+  if (lower(finding).startsWith("recurring friction")) {
+    return `the study describes ${finding}`;
+  }
+
+  return `the study shows ${finding}`;
+}
+
+function composeParagraph(sentences) {
+  return sentences
+    .map((sentence) => addPeriod(sentence))
+    .filter(Boolean)
+    .join(" ");
+}
+
+export function simplifyForStudents(text, methodology = "unknown") {
+  const data = buildRewriteData(text, methodology);
+  const methodExplanation =
+    methodology === "qualitative"
+      ? "This is qualitative evidence, which means it explains themes and experiences rather than giving numbers for everyone"
+      : methodology === "quantitative"
+        ? "This is quantitative evidence, which means it uses data patterns and should keep association separate from causation"
+        : `This is ${methodologyLabel(methodology)} evidence, so the method affects what the study can claim`;
+
+  return composeParagraph([
+    `This study is based on ${data.evidenceType}`,
+    data.conditions.length > 0
+      ? `It describes problems or patterns such as ${inlineList(data.conditions)}`
+      : capitalizeFirst(primaryFinding(data)),
+    `In simpler terms, ${studentMainPoint(data).toLowerCase()}`,
+    methodExplanation,
+    limitationOrDefault(data),
+  ]);
+}
+
+export function makePolicyOriented(text, methodology = "unknown") {
+  const data = buildRewriteData(text, methodology);
+  const method = methodologyLabel(methodology);
+  const cautiousFinding =
+    methodology === "quantitative" ? associationSafeFinding(data) : primaryFinding(data);
+
+  return composeParagraph([
+    `This ${method} study draws on ${data.evidenceType}`,
+    `For policy purposes, the evidence suggests that ${inlineList(
+      data.conditions,
+      cautiousFinding,
+    )} may be relevant to ${data.studyFocus}`,
+    `The findings indicate ${cautiousFinding.toLowerCase()}`,
+    `They should be interpreted cautiously because ${limitationOrDefault(data).toLowerCase()}`,
+  ]);
+}
+
+export function makePlainLanguage(text, methodology = "unknown") {
+  const data = buildRewriteData(text, methodology);
+  const peopleLanguage = lower(data.evidenceType).includes("interview")
+    ? `The researchers interviewed ${data.evidenceType.replace(/^.*?(\d+)/, "$1")}`
+    : `The study looked at ${data.evidenceType}`;
+
+  return composeParagraph([
+    peopleLanguage,
+    data.conditions.length > 0
+      ? `People or studies pointed to ${inlineList(data.conditions)}`
+      : capitalizeFirst(primaryFinding(data)),
+    `The practical meaning is that ${sentenceToFragment(primaryFinding(data)).toLowerCase()}`,
+    limitationOrDefault(data).replace("population-level", "everyone"),
+  ]);
+}
+
+export function makeAnalystFocused(text, methodology = "unknown") {
+  const data = buildRewriteData(text, methodology);
+  const inferenceLimit =
+    methodology === "qualitative"
+      ? "context-bound thematic insight rather than population-level prevalence or causal inference"
+      : methodology === "quantitative"
+        ? "association evidence rather than causal inference unless the design supports causality"
+        : limitationOrDefault(data).toLowerCase();
+
+  return composeParagraph([
+    `The source uses ${methodologyLabel(methodology)} evidence from ${data.evidenceType}`,
+    `Reported findings include ${inlineList(data.findings, primaryFinding(data))}`,
+    data.conditions.length > 0
+      ? `Relevant extracted concepts include ${inlineList(data.conditions)}`
+      : "",
+    `The evidence should be treated as ${inferenceLimit}`,
+    limitationOrDefault(data),
+  ]);
+}
+
+export function makeProgramManagerFocused(text, methodology = "unknown") {
+  const data = buildRewriteData(text, methodology);
+
+  return composeParagraph([
+    `${capitalizeFirst(data.studyFocus)} can be read as an implementation and workflow issue`,
+    data.conditions.length > 0
+      ? `The source points to operational concerns such as ${inlineList(data.conditions)}`
+      : capitalizeFirst(primaryFinding(data)),
+    `Program teams can use this evidence to review handoffs, role clarity, escalation routines, and evaluation checkpoints where relevant`,
+    limitationOrDefault(data),
+  ]);
+}
+
+export function makeCommunicationsFocused(text, methodology = "unknown") {
+  const data = buildRewriteData(text, methodology);
+
+  return composeParagraph([
+    `Message-ready summary: ${sentenceToFragment(primaryFinding(data))}`,
+    data.conditions.length > 0
+      ? `The clearest supporting points are ${inlineList(data.conditions)}`
+      : `The source evidence is ${data.evidenceType}`,
+    `Use cautious language such as "the evidence suggests" or "the findings indicate"`,
+    `Do not overstate the claim: ${limitationOrDefault(data).toLowerCase()}`,
+  ]);
+}
+
+export function makePublicAdministratorFocused(text, methodology = "unknown") {
+  const data = buildRewriteData(text, methodology);
+
+  return composeParagraph([
+    `For administrative practice, the source evidence from ${data.evidenceType} points to ${data.studyFocus}`,
+    data.conditions.length > 0
+      ? `The management-relevant issues include ${inlineList(data.conditions)}`
+      : capitalizeFirst(primaryFinding(data)),
+    `The finding can inform implementation review, operational planning, and management oversight`,
+    limitationOrDefault(data),
+  ]);
+}
+
+export function rewriteForAudience(
+  text,
+  targetAudience = "public_administrators",
+  methodology = "unknown",
+) {
+  if (!normalizeWhitespace(text)) {
+    return "No source text was provided to rewrite.";
+  }
+
+  if (targetAudience === "students") {
+    return simplifyForStudents(text, methodology);
+  }
+
+  if (targetAudience === "policymakers") {
+    return makePolicyOriented(text, methodology);
+  }
+
+  if (targetAudience === "general_public") {
+    return makePlainLanguage(text, methodology);
+  }
+
+  if (targetAudience === "research_analysts") {
+    return makeAnalystFocused(text, methodology);
+  }
+
+  if (targetAudience === "program_managers") {
+    return makeProgramManagerFocused(text, methodology);
+  }
+
+  if (targetAudience === "communications_staff") {
+    return makeCommunicationsFocused(text, methodology);
+  }
+
+  return makePublicAdministratorFocused(text, methodology);
+}
+
+function appendIfMissing(text, requiredPhrase, sentence) {
+  return lower(text).includes(lower(requiredPhrase)) ? text : `${text} ${sentence}`;
+}
+
+export function applyMethodologySafeguards(text, methodology = "unknown") {
+  let rewritten = normalizeWhitespace(text)
+    .replace(/\bcauses?\b/gi, methodology === "experimental" ? "causes" : "is associated with")
+    .replace(/\bleads to\b/gi, methodology === "experimental" ? "leads to" : "is linked to")
+    .replace(/\bproves?\b/gi, "provides evidence about")
+    .replace(/\bguarantees?\b/gi, "does not guarantee")
+    .replace(/\bresults in\b/gi, methodology === "experimental" ? "results in" : "is associated with");
+
+  if (methodology === "qualitative") {
+    rewritten = appendIfMissing(
+      rewritten,
+      "population-level",
+      "The rewritten claim should be read as thematic and context-bound, not as a population-level statistic.",
+    );
+  }
+
+  if (methodology === "quantitative") {
+    rewritten = appendIfMissing(
+      rewritten,
+      "associated",
+      "The rewritten claim should preserve association language and should not imply causality.",
+    );
+  }
+
+  if (methodology === "mixed_methods") {
+    rewritten = appendIfMissing(
+      rewritten,
+      "strands",
+      "Quantitative and qualitative strands should remain visible unless the source explains their integration.",
+    );
+  }
+
+  if (methodology === "theoretical") {
+    rewritten = appendIfMissing(
+      rewritten,
+      "conceptual",
+      "The rewritten claim should be treated as conceptual rather than tested empirical evidence.",
+    );
+  }
+
+  if (methodology === "experimental" && !includesAny(rewritten, causalDesignSignals)) {
+    rewritten = appendIfMissing(
+      rewritten,
+      "causal language",
+      "Causal language should be bounded because randomization, treatment, or control details are not visible in the rewritten text.",
+    );
+  }
+
+  if (methodology === "meta_analysis") {
+    rewritten = appendIfMissing(
+      rewritten,
+      "heterogeneity",
+      "Any pooled interpretation should remain attentive to heterogeneity and study quality.",
+    );
+  }
+
+  if (methodology === "systematic_review") {
+    rewritten = appendIfMissing(
+      rewritten,
+      "synthesis",
+      "The rewritten claim should be read as synthesis of evidence patterns, not causal proof.",
+    );
+  }
+
+  return rewritten;
+}
+
+function practicalMeaningForAudience(targetAudience, data) {
+  const guidance = buildAudienceGuidance(targetAudience);
+
+  if (targetAudience === "students") {
+    return "This helps students see how method choice affects what can responsibly be concluded.";
+  }
+
+  if (targetAudience === "policymakers") {
+    return `This can help policymakers consider ${inlineList(
+      data.conditions,
+      data.studyFocus,
+    )} while keeping evidence limits visible.`;
+  }
+
+  if (targetAudience === "research_analysts") {
+    return "This should be used to review evidence quality, inference limits, and validity before stronger claims are made.";
+  }
+
+  return `This can help ${guidance.label.toLowerCase()} ${guidance.practicalUse}.`;
+}
+
+function cautionForFormattedOutput(data) {
+  const limitation = limitationOrDefault(data);
+
+  if (data.methodology === "quantitative") {
+    return `${limitation}. Do not rewrite the association as a causal effect.`;
+  }
+
+  if (data.methodology === "qualitative") {
+    return `${limitation}. Do not treat themes as population-level statistics.`;
+  }
+
+  return limitation;
+}
+
+function evidenceTitle(data, outputType) {
+  const focus = data.studyFocus || "source evidence";
+  return `${formatLabel(outputType)}: ${titleCase(focus)}`;
+}
+
+function mechanismLinks(data) {
+  if (data.conditions.length === 0) {
+    return [
+      `${capitalizeFirst(data.studyFocus)} may be connected to the observed evidence, but the pathway should stay tentative.`,
+    ];
+  }
+
+  return data.conditions.map((condition) => {
+    const normalized = lower(condition);
+
+    if (normalized.includes("ownership") || normalized.includes("responsibilities")) {
+      return `${capitalizeFirst(condition)} may create role clarity or coordination challenges.`;
+    }
+
+    if (normalized.includes("escalation")) {
+      return `${capitalizeFirst(condition)} may delay problem resolution.`;
+    }
+
+    if (normalized.includes("handoff")) {
+      return `${capitalizeFirst(condition)} may weaken continuity across teams.`;
+    }
+
+    if (normalized.includes("organizational support")) {
+      return `${capitalizeFirst(condition)} is associated with the motivation pattern described in the source.`;
+    }
+
+    return `${capitalizeFirst(condition)} may be part of the process described in the rewritten evidence statement.`;
+  });
+}
+
+export function formatForOutputType(
+  rewrittenText,
+  outputType = "executive_summary",
+  targetAudience = "public_administrators",
+  methodology = "unknown",
+) {
+  const data = buildRewriteData(rewrittenText, methodology);
+  const guidance = buildAudienceGuidance(targetAudience);
+  const mainFinding = capitalizeFirst(primaryFinding(data));
+  const caution = cautionForFormattedOutput(data);
+
+  if (outputType === "policy_brief") {
+    return `Title
+${evidenceTitle(data, outputType)}
+
+Key Message
+${firstSentence(rewrittenText)}
+
+Evidence-Based Summary
+${rewrittenText}
+
+Implications
+${practicalMeaningForAudience(targetAudience, data)}
+
+Caution / Limitations
+${addPeriod(caution)}`;
+  }
+
+  if (outputType === "policy_memo") {
+    return `To
+${guidance.label}
 
 From
 AI Playbook Consistency & Failure Mode Analyzer
 
 Subject
-Method-bounded interpretation of ${data.studyFocus}
+Method-bounded rewrite of ${data.studyFocus}
 
-Background
-The source text provides ${data.evidenceType}. The practitioner question is how to use the evidence about ${data.studyFocus} without exceeding what the method can support.
+Summary
+${rewrittenText}
 
 Analysis
-${listItems(data.keyFindings, "The text does not provide enough finding detail for a strong memo analysis.")}
+${mainFinding}
 
 Recommendation
-${listItems(buildPracticalActions(data), "Request more evidence before making a recommendation.")}
+Use this rewritten evidence as decision support, not as a standalone basis for action.
 
-Limitations and Fidelity Note
-${listItems(limitationsAndFidelity(data), "No explicit limitations were found; add scope and uncertainty language before use.")}`;
-}
-
-function executiveSummary(data) {
-  return `Title
-${data.title}
-
-Overview
-The source text is best read as ${data.evidenceType}. For ${lower(
-    data.audience.label,
-  )}, the practical focus is ${data.studyFocus}.
-
-Key Findings
-${listItems(data.keyFindings, "No clear key finding was detected in the pasted text.")}
-
-Practical Meaning
-${listItems(
-  [
-    `${data.audience.useLine}`,
-    `${capitalizeFirst(data.studyFocus)} should be translated into action only with the method limits visible.`,
-    ...buildPolicyImplications(data).slice(0, 1),
-  ],
-  "Practical meaning requires more source detail.",
-)}
-
-Methodological Caution
-${data.methodologyNote}
-${data.causalityWarning}
-
-Limitations and Fidelity Note
-${listItems(limitationsAndFidelity(data), "No explicit limitations were found; add scope and uncertainty language before use.")}`;
-}
-
-function factSheet(data) {
-  return `Title
-${data.title}
-
-Study Focus
-${capitalizeFirst(data.studyFocus)}
-
-Evidence Type
-${capitalizeFirst(data.evidenceType)}.
-
-Key Takeaways
-${listItems(data.keyFindings, "No clear takeaway was detected in the pasted text.")}
-
-What This Does Not Prove
-${listItems(
-  [data.causalityWarning, ...data.failureNotes],
-  "The text does not prove broad causal or universal claims.",
-)}
-
-Practical Use
-${listItems(buildPracticalActions(data), "Use this as a cautious summary only.")}`;
-}
-
-function linkedInPost(data) {
-  const takeaways = unique([
-    data.keyFindings[0],
-    `For ${lower(data.audience.label)}, the practical issue is ${data.studyFocus}.`,
-    data.limitations[0] ?? data.causalityWarning,
-  ]);
-
-  return `Opening sentence
-Research on ${data.studyFocus} can help public-sector practitioners think more carefully about action, but the method matters.
-
-Three bullet takeaways
-${listItems(takeaways, "The source text needs more evidence detail before public posting.", 3)}
-
-Caution sentence
-${data.causalityWarning}
-
-Hashtags
-#PublicAdministration #EvidenceUse #${formatLabel(data.methodology).replaceAll(" ", "")} #${formatLabel(data.outputType).replaceAll(" ", "")}`;
-}
-
-function mechanismMap(data) {
-  return `Title
-Mechanism Map: ${titleCase(shortenPhrase(data.studyFocus, 8))}
-
-Audience
-${data.audience.label}
-
-Methodology Note
-${data.methodologyNote}
-
-Inputs / Conditions
-${listItems(
-  [
-    data.evidenceType,
-    ...data.conditions,
-  ],
-  "The text does not provide enough conditions to map; add context, actors, and setting.",
-)}
-
-Possible Mechanisms
-${listItems(buildMechanisms(data), "No mechanism should be invented without stronger source evidence.")}
-
-Observed or Suggested Outcomes
-${listItems(data.keyFindings, "No observed or suggested outcomes were detected.")}
-
-Causality Warning
-${data.causalityWarning}
-
-Policy or Practice Use
-${listItems(buildPracticalActions(data), "Use this map as a cautious review aid only.")}
-
-Limitations
-${listItems(
-  unique([...data.limitations, methodologyLimitation(data)]).length > 0
-    ? unique([...data.limitations, methodologyLimitation(data)])
-    : data.failureNotes,
-  "No explicit limitations were found; transfer the map cautiously.",
-)}`;
-}
-
-function technicalNote(data) {
-  return `Title
-${data.title}
-
-Methodology
-${formatLabel(data.methodology)}
-
-Evidence Type
-${capitalizeFirst(data.evidenceType)}.
-
-Inference Rules
-${listItems(
-  [
-    data.methodologyNote,
-    data.causalityWarning,
-    `Audience guidance: ${data.audience.caution}`,
-  ],
-  "Inference rules require a visible methodology.",
-)}
-
-Extracted Evidence
-${listItems(
-  [
-    `Study focus: ${data.studyFocus}.`,
-    ...data.keyFindings,
-    ...data.conditions.map((condition) => `Condition/input: ${condition}.`),
-  ],
-  "No extractable evidence was detected.",
-)}
-
-Fidelity Risks
-${listItems(data.failureNotes, "No priority fidelity risk was detected.")}
-
-Review Notes
-${listItems(buildPracticalActions(data), "Review source evidence and limitations before use.")}`;
-}
-
-export function formatOutputByType(outputType, extractedData) {
-  if (outputType === "policy_brief") {
-    return policyBrief(extractedData);
+Evidence Limit
+${addPeriod(caution)}`;
   }
 
-  if (outputType === "policy_memo") {
-    return policyMemo(extractedData);
+  if (outputType === "executive_summary") {
+    return `Overview
+${rewrittenText}
+
+Main Finding
+${addPeriod(mainFinding)}
+
+Practical Meaning
+${practicalMeaningForAudience(targetAudience, data)}
+
+Limitation
+${addPeriod(caution)}`;
   }
 
   if (outputType === "fact_sheet") {
-    return factSheet(extractedData);
+    return `What the study looked at
+${addPeriod(capitalizeFirst(data.evidenceType))}
+
+What it found
+${rewrittenText}
+
+What it does not prove
+${addPeriod(caution)}
+
+Why it matters
+${practicalMeaningForAudience(targetAudience, data)}`;
   }
 
   if (outputType === "linkedin_post") {
-    return linkedInPost(extractedData);
+    const bullets = unique([
+      firstSentence(rewrittenText),
+      data.conditions.length > 0
+        ? `The key issues are ${inlineList(data.conditions)}.`
+        : addPeriod(mainFinding),
+      addPeriod(caution),
+    ]);
+
+    return `Short opening line
+Evidence is most useful when the wording stays close to what the study actually shows.
+
+3 bullet points
+${listItems(bullets, "The source text needs more evidence detail before public posting.", 3)}
+
+Caution sentence
+${addPeriod(caution)}
+
+Hashtags
+#PublicAdministration #EvidenceUse #${formatLabel(methodology).replaceAll(" ", "")} #${formatLabel(outputType).replaceAll(" ", "")}`;
   }
 
   if (outputType === "mechanism_map") {
-    return mechanismMap(extractedData);
+    return `Conditions
+${listItems(data.conditions, "No clear conditions were detected in the rewritten text.")}
+
+Possible Process Links
+${listItems(mechanismLinks(data), "No process link should be invented without stronger source evidence.")}
+
+Observed Themes or Outcomes
+${rewrittenText}
+
+Causality Warning
+${addPeriod(caution)}`;
   }
 
   if (outputType === "technical_note") {
-    return technicalNote(extractedData);
+    return `Evidence Type
+${addPeriod(capitalizeFirst(data.evidenceType))}
+
+Methodological Interpretation
+${buildMethodologyNote(methodology)}
+
+Rewritten Evidence Statement
+${rewrittenText}
+
+Fidelity Warning
+${addPeriod(caution)}`;
   }
 
-  return executiveSummary(extractedData);
+  return rewrittenText;
 }
+
+export const formatOutputByType = formatForOutputType;
 
 export function generateOutput({
   text = "",
@@ -1079,14 +1174,16 @@ export function generateOutput({
   evidenceSummary,
   failureModes = [],
 } = {}) {
-  const extractedData = baseData({
-    text,
-    methodology,
+  void evidenceSummary;
+  void failureModes;
+
+  const rewrittenText = rewriteForAudience(text, targetAudience, methodology);
+  const safeguardedText = applyMethodologySafeguards(rewrittenText, methodology);
+
+  return formatForOutputType(
+    safeguardedText,
     outputType,
     targetAudience,
-    evidenceSummary,
-    failureModes,
-  });
-
-  return formatOutputByType(outputType, extractedData);
+    methodology,
+  );
 }
