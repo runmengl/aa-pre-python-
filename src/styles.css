@@ -348,6 +348,107 @@ select {
   gap: 12px;
 }
 
+.fidelityLegend,
+.fidelityRiskPanel,
+.fidelityScoreCard {
+  border: 1px solid #d6ded9;
+  border-radius: 8px;
+  background: #fbfcfa;
+}
+
+.fidelityLegend {
+  padding: 14px 16px;
+}
+
+.fidelityLegend h3 {
+  margin: 0 0 8px;
+  color: #14231e;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.fidelityLegend ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.fidelityRiskPanel {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.fidelityRiskReason {
+  grid-column: 1 / -1;
+}
+
+.fidelityRiskReason p:last-child {
+  margin-bottom: 0;
+}
+
+.fidelityScoreGrid {
+  display: grid;
+  gap: 14px;
+}
+
+.fidelityScoreCard {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+}
+
+.fidelityScoreCard p {
+  margin-bottom: 0;
+}
+
+.fidelityScoreHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.fidelityScoreHeader h3 {
+  margin: 0;
+  color: #14231e;
+  font-size: 1.04rem;
+  line-height: 1.25;
+  letter-spacing: 0;
+}
+
+.fidelityMiniLabel {
+  margin: 0 0 6px;
+  color: #4f625b;
+  font-size: 0.78rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.fidelityChipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fidelityChip {
+  border: 1px solid #c8d5dd;
+  border-radius: 999px;
+  padding: 4px 8px;
+  color: #234050;
+  background: #edf4f7;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.fidelityChip[data-tone="risk"] {
+  border-color: #d9b0a8;
+  color: #67231d;
+  background: #fbe8e5;
+}
+
 .inputControls {
   display: grid;
   grid-template-columns: 1fr;
@@ -674,6 +775,7 @@ tbody tr:nth-child(even) {
   .metricGrid,
   .documentMetadataGrid,
   .reportMetaGrid,
+  .fidelityRiskPanel,
   .scoreSummaryGrid {
     grid-template-columns: 1fr;
   }

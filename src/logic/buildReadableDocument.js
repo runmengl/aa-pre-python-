@@ -19,6 +19,18 @@ function listItems(items, fallback = "None detected.") {
   return values.map((item) => `- ${item}`).join("\n");
 }
 
+function formatScoreValue(value) {
+  if (Number.isFinite(Number(value?.score))) {
+    return `${value.score}/5 - ${value.label}. ${value.explanation}`;
+  }
+
+  if (Number.isFinite(Number(value))) {
+    return `${value}/5`;
+  }
+
+  return String(value ?? "Not scored");
+}
+
 function metadataRows(metadata) {
   return [
     ["Methodology", formatLabel(metadata.methodology)],
@@ -192,7 +204,7 @@ export function buildReadableDocument({
     `- Output Type: ${formatLabel(metadata.output_type)}`,
   ].join("\n");
   const scoreLines = Object.entries(scores)
-    .map(([key, value]) => `- ${formatLabel(key)}: ${value}/100`)
+    .map(([key, value]) => `- ${formatLabel(key)}: ${formatScoreValue(value)}`)
     .join("\n");
   const findingLines = Object.entries(findings)
     .map(([key, value]) => `- ${formatLabel(key)}: ${value}`)

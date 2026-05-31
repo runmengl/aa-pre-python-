@@ -70,7 +70,7 @@ function formatLabel(value) {
 
 function averageScore(scores) {
   const values = Object.values(scores ?? {})
-    .map(Number)
+    .map((value) => (Number.isFinite(Number(value?.score)) ? Number(value.score) : Number(value)))
     .filter(Number.isFinite);
 
   if (values.length === 0) {
@@ -194,7 +194,11 @@ export default function ReadableReport({ result, selectedPaper }) {
           {Object.entries(scores).map(([key, value]) => (
             <div className="scoreSummaryItem" key={key}>
               <span>{formatLabel(key)}</span>
-              <strong>{value}</strong>
+              <strong>
+                {Number.isFinite(Number(value?.score))
+                  ? `${value.score}/5`
+                  : value}
+              </strong>
             </div>
           ))}
         </div>

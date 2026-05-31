@@ -3,6 +3,22 @@ function toneFromScore(score) {
     return "neutral";
   }
 
+  if (Number(score) <= 5) {
+    if (score >= 4.5) {
+      return "strong";
+    }
+
+    if (score >= 3.5) {
+      return "workable";
+    }
+
+    if (score >= 2.5) {
+      return "review";
+    }
+
+    return "risk";
+  }
+
   if (score >= 85) {
     return "strong";
   }

@@ -33,8 +33,40 @@ function unique(values) {
   return [...new Set(values.filter(Boolean))];
 }
 
-function clampScore(value) {
-  return Math.max(0, Math.min(100, Math.round(value)));
+function fidelityScoreValue(value) {
+  return Number.isFinite(Number(value?.score)) ? Number(value.score) : 0;
+}
+
+function averageFidelityScore(fidelityScores) {
+  const values = consistencyDimensions
+    .map((dimension) => fidelityScoreValue(fidelityScores?.[dimension]))
+    .filter((value) => value > 0);
+
+  if (values.length === 0) {
+    return 0;
+  }
+
+  return Math.round((values.reduce((total, value) => total + value, 0) / values.length) * 10) / 10;
+}
+
+function scoreBand(score) {
+  if (score >= 4.5) {
+    return "excellent";
+  }
+
+  if (score >= 3.5) {
+    return "strong";
+  }
+
+  if (score >= 2.5) {
+    return "acceptable";
+  }
+
+  if (score >= 1.5) {
+    return "low";
+  }
+
+  return "very low";
 }
 
 function sentenceFallback(text) {
@@ -79,7 +111,7 @@ function buildWorkflowTrace({
     stage_5_output_risk_assessment: outputRule
       ? `${outputLabel} has ${outputRule.riskLevel} output risk; safeguards should remain visible in the draft.`
       : "The selected output type does not have a configured risk profile.",
-    stage_6_fidelity_check: `Fidelity review completed with an internal overall score of ${fidelityScores.overall} (${fidelityScores.band}).`,
+    stage_6_fidelity_check: `Fidelity review completed on a 1-5 scale with an average score of ${averageFidelityScore(fidelityScores)}/5 (${scoreBand(averageFidelityScore(fidelityScores))}).`,
     stage_7_consistency_analysis: `Cross-method consistency was reviewed across ${consistencyDimensions.length} dimensions.`,
     stage_8_failure_mode_detection: `${failureModes.length} failure mode(s) were detected for this input.`,
   };
@@ -160,30 +192,57 @@ function buildCrossMethodConsistencyFindings({
   };
 }
 
-function scoreFromInternal({
-  fidelityScores,
-  evidenceSummary,
-  failureModes,
-}) {
-  const methodologyAlignment =
-    fidelityScores.dimensions?.methodology_alignment?.score ?? fidelityScores.overall;
-  const evidenceGrounding =
-    fidelityScores.dimensions?.evidence_grounding?.score ?? fidelityScores.overall;
-  const languageDiscipline =
-    fidelityScores.dimensions?.language_discipline?.score ?? fidelityScores.overall;
-  const outputReadiness =
-    fidelityScores.dimensions?.output_readiness?.score ?? fidelityScores.overall;
-  const limitationBonus = evidenceSummary.summary.has_limitations ? 8 : -8;
-  const scopePenalty = hasFailure(failureModes, "overgeneralized_language") ? 18 : 0;
+function finalFidelityScores(fidelityScores) {
+  return Object.fromEntries(
+    consistencyDimensions.map((dimension) => [dimension, fidelityScores[dimension]]),
+  );
+}
+
+function buildOutputRiskNote({ outputType, outputRule, selectedMethodology }) {
+  const outputLabel = outputRule?.label ?? outputType;
+  const methodologyLabel = selectedMethodology.replaceAll("_", " ");
+
+  if (outputType === "mechanism_map") {
+    return {
+      detected_methodology: selectedMethodology,
+      output_type: outputType,
+      risk_level: "very high",
+      why_this_combination_matters:
+        "Mechanism Map is very high risk for theoretical, qualitative, and review-based evidence because it can imply unsupported causal pathways.",
+    };
+  }
+
+  if (
+    outputType === "technical_note" &&
+    ["qualitative", "theoretical", "systematic_review", "meta_analysis"].includes(
+      selectedMethodology,
+    )
+  ) {
+    return {
+      detected_methodology: selectedMethodology,
+      output_type: outputType,
+      risk_level: "high",
+      why_this_combination_matters: `${outputLabel} can make ${methodologyLabel} evidence look more technically precise than the source supports.`,
+    };
+  }
+
+  if (outputType === "linkedin_post") {
+    return {
+      detected_methodology: selectedMethodology,
+      output_type: outputType,
+      risk_level: "high persuasive",
+      why_this_combination_matters:
+        "Persuasive public-facing formats can compress caveats and make findings sound more certain than the method supports.",
+    };
+  }
 
   return {
-    claim_accuracy: clampScore(methodologyAlignment),
-    causal_precision: clampScore(languageDiscipline),
-    scope_fidelity: clampScore(methodologyAlignment - scopePenalty),
-    method_transparency: clampScore(evidenceGrounding),
-    nuance_preservation: clampScore(evidenceGrounding + limitationBonus),
-    audience_calibration: clampScore(outputReadiness),
-    actionability: clampScore((methodologyAlignment + outputReadiness) / 2),
+    detected_methodology: selectedMethodology,
+    output_type: outputType,
+    risk_level: outputRule?.riskLevel ?? "not configured",
+    why_this_combination_matters: outputRule
+      ? `${outputLabel} outputs should keep claims calibrated to ${methodologyLabel} inference limits.`
+      : "This output type does not have a configured risk profile.",
   };
 }
 
@@ -246,6 +305,8 @@ export function analyzeText(input = {}) {
     evidenceSummary: evidenceSummaryRaw,
     failureModes: failureModesRaw,
     methodology: selectedMethodology,
+    outputType,
+    targetAudience,
   });
   const failureModes = buildFailureModes(failureModesRaw);
   const evidenceSummary = buildEvidenceSummary(evidenceSummaryRaw, text);
@@ -298,10 +359,12 @@ export function analyzeText(input = {}) {
 
     failure_modes: failureModes,
 
-    fidelity_scores: scoreFromInternal({
-      fidelityScores: fidelityScoresRaw,
-      evidenceSummary: evidenceSummaryRaw,
-      failureModes: failureModesRaw,
+    fidelity_scores: finalFidelityScores(fidelityScoresRaw),
+
+    fidelity_risk_note: buildOutputRiskNote({
+      outputType,
+      outputRule,
+      selectedMethodology,
     }),
 
     capstone_summary: buildCapstoneText(

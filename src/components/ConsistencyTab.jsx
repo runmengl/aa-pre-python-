@@ -41,22 +41,172 @@ function FindingList({ findings }) {
   );
 }
 
+const scoringScale = [
+  "1 = Very Low Fidelity",
+  "2 = Low Fidelity",
+  "3 = Acceptable with limitations",
+  "4 = Strong fidelity with minor issues",
+  "5 = Excellent / Perfect Fidelity",
+];
+
+function scoreTone(score) {
+  if (!Number.isFinite(Number(score))) return "neutral";
+  if (score >= 5) return "strong";
+  if (score >= 4) return "workable";
+  if (score >= 3) return "review";
+  return "risk";
+}
+
+function valueScore(value) {
+  if (Number.isFinite(Number(value?.score))) {
+    return Number(value.score);
+  }
+
+  if (Number.isFinite(Number(value))) {
+    return Number(value);
+  }
+
+  return undefined;
+}
+
+function normalizeScoreEntry(key, value) {
+  if (value && typeof value === "object" && "score" in value) {
+    return value;
+  }
+
+  const score = valueScore(value);
+
+  return {
+    score,
+    label: score ? `${score}/5` : "Not scored",
+    explanation: "Detailed scoring information is not available for this result.",
+    evidence: [],
+    risks: [],
+    recommended_fix: "Run a new analysis to generate detailed fidelity scoring.",
+    anchor_justification: "",
+  };
+}
+
+function ChipList({ items, emptyLabel, tone = "neutral" }) {
+  const values = Array.isArray(items) ? items.filter(Boolean) : [];
+
+  if (values.length === 0) {
+    return <span className="fidelityChip">{emptyLabel}</span>;
+  }
+
+  return values.map((item, index) => (
+    <span className="fidelityChip" data-tone={tone} key={`${item}-${index}`}>
+      {item}
+    </span>
+  ));
+}
+
+function ScoringLegend() {
+  return (
+    <div className="fidelityLegend">
+      <h3>Fidelity Scoring Scale</h3>
+      <ul>
+        {scoringScale.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+function RiskNotePanel({ result }) {
+  const note = result?.fidelity_risk_note;
+  const generatedOutput = result?.generated_output;
+  const profile = result?.methodology_profile;
+
+  if (!note && !generatedOutput && !profile) {
+    return null;
+  }
+
+  return (
+    <div className="fidelityRiskPanel">
+      <div>
+        <p className="metricLabel">Detected Methodology</p>
+        <p className="reportMetaValue">
+          {formatLabel(note?.detected_methodology ?? profile?.detected_methodology)}
+        </p>
+      </div>
+      <div>
+        <p className="metricLabel">Output Type</p>
+        <p className="reportMetaValue">
+          {formatLabel(note?.output_type ?? generatedOutput?.output_type)}
+        </p>
+      </div>
+      <div>
+        <p className="metricLabel">Risk Level</p>
+        <p className="reportMetaValue">{formatLabel(note?.risk_level)}</p>
+      </div>
+      <div className="fidelityRiskReason">
+        <p className="metricLabel">Why This Combination Matters</p>
+        <p>{note?.why_this_combination_matters ?? "Risk note is not available."}</p>
+      </div>
+    </div>
+  );
+}
+
 function FidelityScores({ fidelityScores }) {
   if (!fidelityScores) {
     return <p className="metricLabel">Fidelity scores are not available yet.</p>;
   }
 
-  const scoreEntries = Object.entries(fidelityScores).filter(([, value]) =>
-    Number.isFinite(Number(value)),
-  );
+  const scoreEntries = Object.entries(fidelityScores).map(([key, value]) => [
+    key,
+    normalizeScoreEntry(key, value),
+  ]);
 
   return (
-    <div className="metricGrid">
-      {scoreEntries.map(([key, score]) => (
-        <div className="metric" key={key}>
-          <p className="metricLabel">{formatLabel(key)}</p>
-          <p className="metricValue">{score}</p>
-        </div>
+    <div className="fidelityScoreGrid">
+      {scoreEntries.map(([key, scoreDetail]) => (
+        <article className="fidelityScoreCard" key={key}>
+          <div className="fidelityScoreHeader">
+            <div>
+              <p className="metricLabel">{formatLabel(key)}</p>
+              <h3>{scoreDetail.label}</h3>
+            </div>
+            <ScoreBadge
+              label={`${scoreDetail.score ?? "?"}/5`}
+              tone={scoreTone(scoreDetail.score)}
+            />
+          </div>
+
+          <p>{scoreDetail.explanation}</p>
+
+          <div>
+            <p className="fidelityMiniLabel">Detected Evidence</p>
+            <div className="fidelityChipRow">
+              <ChipList
+                emptyLabel="No direct evidence captured"
+                items={scoreDetail.evidence}
+              />
+            </div>
+          </div>
+
+          <div>
+            <p className="fidelityMiniLabel">Risk Flags</p>
+            <div className="fidelityChipRow">
+              <ChipList
+                emptyLabel="No priority risk flag"
+                items={scoreDetail.risks}
+                tone="risk"
+              />
+            </div>
+          </div>
+
+          <div>
+            <p className="fidelityMiniLabel">Recommended Fix</p>
+            <p>{scoreDetail.recommended_fix}</p>
+          </div>
+
+          <div>
+            <p className="fidelityMiniLabel">Anchor Justification</p>
+            <p>{scoreDetail.anchor_justification}</p>
+          </div>
+        </article>
       ))}
       {scoreEntries.length === 0 && (
         <p className="metricLabel">Fidelity scores are not available yet.</p>
@@ -67,7 +217,7 @@ function FidelityScores({ fidelityScores }) {
 
 function averageScore(scores) {
   const values = Object.values(scores ?? {})
-    .map(Number)
+    .map(valueScore)
     .filter(Number.isFinite);
 
   if (values.length === 0) {
@@ -112,9 +262,20 @@ export default function ConsistencyTab({
   return (
     <Card
       title="Consistency"
-      action={<ScoreBadge score={averageScore(resolvedScores)} />}
+      action={
+        <ScoreBadge
+          label={
+            averageScore(resolvedScores)
+              ? `${averageScore(resolvedScores).toFixed(1)}/5`
+              : "Pending"
+          }
+          tone={scoreTone(averageScore(resolvedScores))}
+        />
+      }
     >
       <MethodologyProfile profile={result?.methodology_profile} />
+      <ScoringLegend />
+      <RiskNotePanel result={result} />
       <FidelityScores fidelityScores={resolvedScores} />
       <FindingList findings={resolvedFindings} />
     </Card>
