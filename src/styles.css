@@ -519,6 +519,13 @@ select {
   letter-spacing: 0;
 }
 
+.generatedDocumentPreview h3 {
+  margin: 18px 0 8px;
+  color: #173028;
+  font-size: 0.95rem;
+  letter-spacing: 0;
+}
+
 .generatedDocumentPreview p {
   margin: 0 0 10px;
 }

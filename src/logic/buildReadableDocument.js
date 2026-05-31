@@ -38,6 +38,47 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+const generatedOutputHeadings = new Set([
+  "Title",
+  "Audience",
+  "Methodology Note",
+  "Issue",
+  "Evidence Summary",
+  "Policy Implications",
+  "Recommended Actions",
+  "Limitations and Fidelity Note",
+  "To",
+  "From",
+  "Subject",
+  "Background",
+  "Analysis",
+  "Recommendation",
+  "Overview",
+  "Key Findings",
+  "Practical Meaning",
+  "Methodological Caution",
+  "Study Focus",
+  "Evidence Type",
+  "Key Takeaways",
+  "What This Does Not Prove",
+  "Practical Use",
+  "Opening sentence",
+  "Three bullet takeaways",
+  "Caution sentence",
+  "Hashtags",
+  "Inputs / Conditions",
+  "Possible Mechanisms",
+  "Observed or Suggested Outcomes",
+  "Causality Warning",
+  "Policy or Practice Use",
+  "Limitations",
+  "Methodology",
+  "Inference Rules",
+  "Extracted Evidence",
+  "Fidelity Risks",
+  "Review Notes",
+]);
+
 function markdownToHtml(markdown) {
   const lines = String(markdown ?? "").split("\n");
   const html = [];
@@ -60,6 +101,12 @@ function markdownToHtml(markdown) {
     if (line.startsWith("## ")) {
       closeList();
       html.push(`<h2>${escapeHtml(line.slice(3))}</h2>`);
+      return;
+    }
+
+    if (generatedOutputHeadings.has(line.trim())) {
+      closeList();
+      html.push(`<h3>${escapeHtml(line.trim())}</h3>`);
       return;
     }
 
@@ -87,8 +134,8 @@ function markdownToHtml(markdown) {
 
 function plainTextFromMarkdown(markdown) {
   return String(markdown ?? "")
-    .replace(/^###?\s+/gm, "")
-    .replace(/^- /gm, "• ");
+    .replace(/^#{1,3}\s+/gm, "")
+    .replace(/^- /gm, "- ");
 }
 
 export function buildReadableDocument({
