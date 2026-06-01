@@ -320,7 +320,7 @@ select {
 
 .tabs {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 8px;
   border: 1px solid #ccd8d2;
   border-radius: 8px;
@@ -340,6 +340,148 @@ select {
 
 .tabContent {
   min-height: 420px;
+}
+
+.consistencyHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.consistencyHeader h3,
+.consistencyPatternPanel h3,
+.problemPairingSection h3,
+.consistencyNarrative h3 {
+  margin: 0 0 6px;
+  color: #14231e;
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.consistencyHeader p {
+  margin: 0;
+  color: #50645d;
+  font-size: 0.92rem;
+  font-weight: 650;
+}
+
+.consistencyInputNote {
+  margin: 0;
+  border: 1px solid #d8b7ac;
+  border-radius: 8px;
+  padding: 12px 14px;
+  color: #61251d;
+  background: #fff0ed;
+  font-weight: 700;
+}
+
+.consistencyLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(230px, 285px);
+  gap: 16px;
+  align-items: start;
+}
+
+.consistencyMatrixPanel,
+.problemPairingSection,
+.consistencyNarrative {
+  display: grid;
+  gap: 10px;
+}
+
+.consistencyTableWrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.consistencyMatrix th,
+.consistencyMatrix td {
+  text-align: center;
+  white-space: nowrap;
+}
+
+.consistencyMatrix th:first-child,
+.consistencyMatrix td:first-child {
+  text-align: left;
+}
+
+.consistencyMatrix abbr {
+  text-decoration: none;
+}
+
+.consistencyMatrix tbody tr[data-current="true"] {
+  box-shadow: inset 4px 0 0 #315a86;
+}
+
+.consistencyScoreCell {
+  font-weight: 850;
+}
+
+.consistencyMatrix .consistencyScoreCell[data-tone="high"] {
+  color: #0f3f2b;
+  background: #d7efe0;
+}
+
+.consistencyMatrix .consistencyScoreCell[data-tone="strong"] {
+  color: #253f19;
+  background: #e9f3d6;
+}
+
+.consistencyMatrix .consistencyScoreCell[data-tone="moderate"] {
+  color: #5a3f00;
+  background: #fff0c9;
+}
+
+.consistencyMatrix .consistencyScoreCell[data-tone="low"] {
+  color: #671c17;
+  background: #f8d8d4;
+}
+
+.consistencyMatrix .consistencyAvgCell {
+  color: #173e63;
+  background: #e5f0fa;
+}
+
+.consistencyPatternPanel {
+  display: grid;
+  gap: 12px;
+  border: 1px solid #c8d8e6;
+  border-radius: 8px;
+  padding: 14px;
+  background: #f4f9fd;
+}
+
+.consistencyPatternGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.patternMetric {
+  border: 1px solid #d8e0dc;
+  border-radius: 6px;
+  padding: 10px;
+  background: #ffffff;
+}
+
+.patternMetric p {
+  margin: 0;
+}
+
+.patternValue {
+  color: #14231e;
+  font-size: 1rem;
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.consistencyNarrative {
+  border-top: 1px solid #edf0ec;
+  padding-top: 4px;
+}
+
+.consistencyNarrative p {
+  margin-bottom: 0;
 }
 
 .metricGrid {
@@ -780,6 +922,18 @@ tbody tr:nth-child(even) {
     grid-template-columns: 1fr;
   }
 
+  .tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .consistencyLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .consistencyPatternGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .textInput {
     min-height: 250px;
   }
@@ -800,6 +954,14 @@ tbody tr:nth-child(even) {
   }
 
   .tabs {
+    grid-template-columns: 1fr;
+  }
+
+  .consistencyHeader {
+    flex-direction: column;
+  }
+
+  .consistencyPatternGrid {
     grid-template-columns: 1fr;
   }
 

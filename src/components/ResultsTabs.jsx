@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CapstoneTalkingPoints from "./CapstoneTalkingPoints.jsx";
-import ConsistencyTab from "./ConsistencyTab.jsx";
+import ConsistencyAnalysisTab from "./ConsistencyAnalysisTab.jsx";
+import FidelityTab from "./FidelityTab.jsx";
 import GeneratedDocumentTab from "./GeneratedDocumentTab.jsx";
 import FailureModesTab from "./FailureModesTab.jsx";
 import GeneratedOutputTab from "./GeneratedOutputTab.jsx";
@@ -8,7 +9,8 @@ import WorkflowTab from "./WorkflowTab.jsx";
 
 const tabs = [
   { id: "workflow", label: "Workflow", Component: WorkflowTab },
-  { id: "consistency", label: "Consistency", Component: ConsistencyTab },
+  { id: "fidelity", label: "Fidelity", Component: FidelityTab },
+  { id: "consistency", label: "Consistency", Component: ConsistencyAnalysisTab },
   { id: "failures", label: "Failure Modes", Component: FailureModesTab },
   { id: "generated", label: "Generated Output", Component: GeneratedOutputTab },
   {
@@ -21,6 +23,10 @@ const tabs = [
 export default function ResultsTabs({
   result,
   selectedPaper,
+  text,
+  selectedMethodology,
+  outputType,
+  targetAudience,
   initialTab = "workflow",
 }) {
   const [activeTab, setActiveTab] = useState(initialTab);
@@ -58,7 +64,14 @@ export default function ResultsTabs({
         id={`${currentTab.id}-panel`}
         role="tabpanel"
       >
-        <ActiveComponent result={result} selectedPaper={selectedPaper} />
+        <ActiveComponent
+          result={result}
+          selectedPaper={selectedPaper}
+          text={text}
+          selectedMethodology={selectedMethodology}
+          outputType={outputType}
+          targetAudience={targetAudience}
+        />
       </div>
 
       <CapstoneTalkingPoints result={result} />

@@ -174,7 +174,14 @@ export default function App() {
             selectedSampleId={selectedSampleId}
           />
         </div>
-        <ResultsTabs result={result} selectedPaper={selectedPaper} />
+        <ResultsTabs
+          result={result}
+          selectedPaper={selectedPaper}
+          text={text}
+          selectedMethodology={expectedMethodology}
+          outputType={outputType}
+          targetAudience={targetAudience}
+        />
       </section>
     </main>
   );

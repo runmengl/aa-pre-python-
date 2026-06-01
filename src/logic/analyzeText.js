@@ -379,5 +379,7 @@ export function analyzeText(input = {}) {
       methodology: selectedMethodology,
       text: generatedOutputText,
     },
+
+    generated_document: null,
   };
 }
