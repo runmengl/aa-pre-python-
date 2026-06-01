@@ -69,6 +69,13 @@ function valueScore(value) {
   return undefined;
 }
 
+function hasAnalysisResult(result) {
+  return Boolean(
+    result &&
+      (result.workflow_trace || result.fidelity_scores || result.failure_modes),
+  );
+}
+
 function normalizeScoreEntry(key, value) {
   if (value && typeof value === "object" && "score" in value) {
     return value;
@@ -251,6 +258,20 @@ function MethodologyProfile({ profile }) {
 }
 
 export default function FidelityTab({ result, findings, fidelityScores }) {
+  if (!hasAnalysisResult(result)) {
+    return (
+      <Card title="Fidelity" action={<ScoreBadge label="Pending" />}>
+        <div className="empty-state">
+          <h2>Fidelity Analysis</h2>
+          <p>
+            Run Analyze Text or Generate Document to generate single-input
+            fidelity scores.
+          </p>
+        </div>
+      </Card>
+    );
+  }
+
   const resolvedFindings =
     findings ?? result?.cross_method_consistency_findings ?? {};
   const resolvedScores = fidelityScores ?? result?.fidelity_scores;

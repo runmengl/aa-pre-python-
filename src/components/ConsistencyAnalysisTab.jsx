@@ -52,6 +52,13 @@ function hasPriorityFailure(failureModes) {
   );
 }
 
+function hasAnalysisResult(result) {
+  return Boolean(
+    result &&
+      (result.workflow_trace || result.fidelity_scores || result.failure_modes),
+  );
+}
+
 function currentTraditionLabel({ result, selectedPaper, selectedMethodology }) {
   const methodology =
     result?.generated_output?.methodology ??
@@ -189,6 +196,24 @@ export default function ConsistencyAnalysisTab({
   outputType,
   targetAudience,
 }) {
+  if (!hasAnalysisResult(result)) {
+    return (
+      <Card title="Consistency" action={<ScoreBadge label="Pending" />}>
+        <div className="empty-state">
+          <h2>Consistency Analysis</h2>
+          <p>
+            Run Analyze Text or Generate Document to generate the
+            cross-methodology consistency matrix.
+          </p>
+          <p>
+            This section compares fidelity patterns across seven methodological
+            traditions after the current input has been processed.
+          </p>
+        </div>
+      </Card>
+    );
+  }
+
   const generatedOutput = result?.generated_output ?? {};
   const consistency = buildConsistencyMatrix({
     text: text ?? selectedPaper?.research_text ?? "",
