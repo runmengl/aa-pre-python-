@@ -1,10 +1,12 @@
 import { useState } from "react";
 import InputPanel from "./components/InputPanel.jsx";
 import PaperSearch from "./components/PaperSearch.jsx";
+import PdfUploadPanel from "./components/PdfUploadPanel.jsx";
 import SampleTextButtons from "./components/SampleTextButtons.jsx";
 import ResultsTabs from "./components/ResultsTabs.jsx";
 import { analyzeText } from "./logic/analyzeText.js";
 import { buildReadableDocument } from "./logic/buildReadableDocument.js";
+import { resolveMethodologyFromText } from "./logic/detectMethodology.js";
 import { logGenerationEvent } from "./utils/generationLogger.js";
 import {
   methodologyOptions,
@@ -20,11 +22,13 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [selectedSampleId, setSelectedSampleId] = useState(null);
   const [selectedPaper, setSelectedPaper] = useState(null);
+  const [pdfDetection, setPdfDetection] = useState(null);
 
   function handleTextChange(nextText) {
     setText(nextText);
     setSelectedSampleId(null);
     setSelectedPaper(null);
+    setPdfDetection(null);
     setResult(null);
   }
 
@@ -33,6 +37,7 @@ export default function App() {
     setExpectedMethodology(sample.methodology ?? "auto_detect");
     setSelectedSampleId(sample.id);
     setSelectedPaper(null);
+    setPdfDetection(null);
     setResult(null);
   }
 
@@ -41,6 +46,7 @@ export default function App() {
     setExpectedMethodology(paper.methodology);
     setSelectedPaper(paper);
     setSelectedSampleId(null);
+    setPdfDetection(null);
     setResult(null);
     console.log("Use This Paper selected", {
       paperId: paper.id,
@@ -62,6 +68,69 @@ export default function App() {
   function handleTargetAudienceChange(nextTargetAudience) {
     setTargetAudience(nextTargetAudience);
     setResult(null);
+  }
+
+  function handlePdfTextExtracted(extraction) {
+    if (!extraction?.text) {
+      setPdfDetection(null);
+      return;
+    }
+
+    const { detection } = resolveMethodologyFromText(extraction.text);
+
+    setPdfDetection(detection);
+  }
+
+  function preparePdfTextForAnalysis(extraction) {
+    const nextText = extraction?.text ?? "";
+    const { detection, detectedMethodology } = resolveMethodologyFromText(nextText);
+
+    setText(nextText);
+    setExpectedMethodology(detectedMethodology);
+    setSelectedSampleId(null);
+    setSelectedPaper(null);
+    setPdfDetection(detection);
+
+    return {
+      text: nextText,
+      expectedMethodology: detectedMethodology,
+    };
+  }
+
+  function handleUseExtractedPdfText(extraction) {
+    preparePdfTextForAnalysis(extraction);
+    setResult(null);
+  }
+
+  function handleAnalyzePdfText(extraction) {
+    const prepared = preparePdfTextForAnalysis(extraction);
+
+    console.log("Analyze PDF Text clicked", {
+      textLength: prepared.text.length,
+      expectedMethodology: prepared.expectedMethodology,
+      outputType,
+      targetAudience,
+    });
+
+    const analysis = analyzeText({
+      text: prepared.text,
+      expectedMethodology: prepared.expectedMethodology,
+      outputType,
+      targetAudience,
+    });
+    const document = buildReadableDocument({
+      analysis,
+      text: prepared.text,
+      expectedMethodology: prepared.expectedMethodology,
+      outputType,
+      targetAudience,
+      selectedPaper: null,
+    });
+
+    setResult({
+      ...analysis,
+      generated_document: document,
+    });
   }
 
   function handleAnalyze() {
@@ -153,6 +222,12 @@ export default function App() {
       <section className="workspace" aria-label="Analyzer workspace">
         <div className="inputColumn">
           <PaperSearch onUsePaper={handleUsePaper} />
+          <PdfUploadPanel
+            detectedMethodology={pdfDetection?.detected_methodology}
+            onAnalyzePdfText={handleAnalyzePdfText}
+            onTextExtracted={handlePdfTextExtracted}
+            onUseExtractedText={handleUseExtractedPdfText}
+          />
           <InputPanel
             value={text}
             onTextChange={handleTextChange}

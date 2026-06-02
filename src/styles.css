@@ -160,6 +160,7 @@ strong {
 
 .textInput:focus,
 .keywordInput:focus,
+.fileInput:focus-visible,
 .analyzeButton:focus-visible,
 .documentButton:focus-visible,
 .tabButton:focus-visible,
@@ -192,6 +193,86 @@ select {
 .paperSearchForm {
   display: grid;
   gap: 8px;
+}
+
+.pdfUploadGrid {
+  display: grid;
+  gap: 12px;
+}
+
+.fileInput {
+  width: 100%;
+  border: 1px solid #b9c7c0;
+  border-radius: 6px;
+  padding: 9px 10px;
+  color: #14231e;
+  background: #ffffff;
+}
+
+.pdfFileMeta,
+.pdfActionRow,
+.pdfMetaGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.pdfFileMeta {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  border: 1px solid #d6ded9;
+  border-radius: 6px;
+  padding: 9px 10px;
+  color: #263833;
+  background: #f8faf8;
+  font-size: 0.86rem;
+  font-weight: 750;
+}
+
+.pdfFileMeta span:first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pdfActionRow {
+  grid-template-columns: 1fr;
+}
+
+.pdfStatus {
+  margin: 0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.pdfStatus[data-tone="success"] {
+  border: 1px solid #bdd5c9;
+  color: #173f2b;
+  background: #e8f4ee;
+}
+
+.pdfStatus[data-tone="error"] {
+  border: 1px solid #d9b0a8;
+  color: #67231d;
+  background: #fbe8e5;
+}
+
+.pdfMetaGrid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.pdfPreview {
+  width: 100%;
+  min-height: 180px;
+  resize: vertical;
+  border: 1px solid #bac8c1;
+  border-radius: 6px;
+  padding: 12px;
+  color: #14231e;
+  background: #fbfcfa;
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 .paperSourceControl {
@@ -938,6 +1019,7 @@ tbody tr:nth-child(even) {
   .metricGrid,
   .documentMetadataGrid,
   .reportMetaGrid,
+  .pdfMetaGrid,
   .fidelityRiskPanel,
   .scoreSummaryGrid {
     grid-template-columns: 1fr;
