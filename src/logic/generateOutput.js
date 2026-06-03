@@ -1065,7 +1065,7 @@ ${addPeriod(caution)}`;
 ${guidance.label}
 
 From
-AI Playbook Consistency & Failure Mode Analyzer
+Policy Crawler and Analyzer
 
 Subject
 Method-bounded rewrite of ${data.studyFocus}

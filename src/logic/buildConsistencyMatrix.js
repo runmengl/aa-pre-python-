@@ -115,7 +115,7 @@ const defaultNarrative = [
   "Overall, the system performs best with Experimental methods because experimental research has a clearer causal structure, making it easier for the system to determine which claims are supported. The system performs weakest with Theoretical methods because theoretical articles mainly provide conceptual frameworks rather than empirical evidence, so the system may present theoretical explanations as if they were proven findings.",
   "The most important finding is that the weakest dimension is Causal Precision. This means the system may make limited evidence sound too causal or too certain. This risk is especially high for Theoretical, Qualitative, and Systematic Review methods, especially when generating mechanism maps or technical notes.",
   "The top problematic pairings are Mechanism Map x Theoretical, Technical Note x Theoretical, and Mechanism Map x Systematic Review. These pairings are risky because the output format asks for causal pathways or technical details that the methodology may not support.",
-  "Overall, AI Playbook consistency does not mean that all methods perform equally well. Instead, it means the system can use the same standards to identify the strengths, weaknesses, and failure modes of different methodologies.",
+  "Overall, Policy Crawler and Analyzer consistency does not mean that all methods perform equally well. Instead, it means the system can use the same standards to identify the strengths, weaknesses, and failure modes of different methodologies.",
 ].join("\n\n");
 
 function round2(value) {

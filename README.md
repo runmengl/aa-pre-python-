@@ -1,6 +1,8 @@
-# AI Playbook Consistency & Failure Mode Analyzer
+# Policy Crawler and Analyzer
 
-AI Playbook Consistency & Failure Mode Analyzer is a single-page React + Vite app for reviewing whether an AI-generated playbook output stays faithful to its stated research methodology. It checks visible evidence, methodology alignment, likely failure modes, fidelity scores, and capstone-ready talking points without calling any external model or API.
+A browser-based tool for policy source discovery, PDF/file analysis, fidelity scoring, consistency testing, failure mode detection, and audience-adapted document generation.
+
+Policy Crawler and Analyzer is a single-page React + Vite app for reviewing whether a policy-facing generated output stays faithful to its stated research methodology. It checks visible evidence, methodology alignment, likely failure modes, fidelity scores, and capstone-ready talking points without calling any external model or API.
 
 ## Project Purpose
 

@@ -4,9 +4,9 @@
 
 This project is a React + Vite single-page web app called:
 
-AI Playbook Consistency & Failure Mode Analyzer
+Policy Crawler and Analyzer
 
-The app supports a Capstone demonstration for an AI Playbook project in public administration research translation. It allows users to paste different types of research text and receive a standardized analysis output showing:
+The app supports a Capstone demonstration for a public administration research translation project. It allows users to paste different types of research text and receive a standardized analysis output showing:
 
 1. workflow trace,
 2. cross-method consistency findings,

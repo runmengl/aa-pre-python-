@@ -60,7 +60,7 @@ function printGenerationLog(payload) {
   const timestamp = new Date().toISOString();
 
   console.log("\n============================================================");
-  console.log("AI PLAYBOOK DOCUMENT GENERATION");
+  console.log("POLICY CRAWLER AND ANALYZER DOCUMENT GENERATION");
   console.log("============================================================");
   console.log(`Event: ${payload.event || "Generate Document"}`);
   console.log(`Timestamp: ${timestamp}`);

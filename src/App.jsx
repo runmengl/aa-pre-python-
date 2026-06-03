@@ -216,7 +216,12 @@ export default function App() {
     <main className="app">
       <header className="appHeader">
         <p className="eyebrow">AI Review Desk</p>
-        <h1>AI Playbook Consistency & Failure Mode Analyzer</h1>
+        <h1>Policy Crawler and Analyzer</h1>
+        <p className="appSubtitle">
+          A browser-based tool for policy source discovery, PDF/file analysis,
+          fidelity scoring, consistency testing, failure mode detection, and
+          audience-adapted document generation.
+        </p>
       </header>
 
       <section className="workspace" aria-label="Analyzer workspace">

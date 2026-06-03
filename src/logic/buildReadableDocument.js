@@ -177,8 +177,9 @@ export function buildReadableDocument({
   selectedPaper,
 } = {}) {
   const generatedAt = new Date().toISOString();
-  const title = "AI Playbook Generated Document";
-  const subtitle = "Method-bounded practitioner report";
+  const title = "Policy Crawler and Analyzer Generated Document";
+  const subtitle =
+    "A browser-based tool for policy source discovery, PDF/file analysis, fidelity scoring, consistency testing, failure mode detection, and audience-adapted document generation.";
   const metadata = {
     methodology:
       analysis?.generated_output?.methodology ??
